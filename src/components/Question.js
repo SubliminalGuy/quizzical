@@ -1,19 +1,17 @@
-//import Answers from "./Answers"
+
 
 export default function Question(props) {
 
-  /*
-  let answers = []
-  answers.push(props.knowledge.correct_answer)
-answers.push(...props.knowledge.incorrect_answers)
-  let allAnswers = answers.map(el => <Answers answers={el} />)
+  
+  let answers = props.knowledge.answers.map(el =>  <p className={`answer-button ${el.clicked ? "blue" : ""}`} onClick={(e) => props.clickHandler(e)}>{el.answer}</p>)
 
-*/
-    
+  
     return (
         <div className="content-box">
-            <h2>{props.knowledge.question}</h2>
-<p className={props.knowledge.clicked ? "reddish": ""}>{props.knowledge.correct_answer}</p>
+            <h3>{props.knowledge.question}</h3>
+            <div className="answer-box">
+              {answers}
+            </div>
         </div>
     )
     

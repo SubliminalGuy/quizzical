@@ -1,7 +1,10 @@
 
 import './App.css';
-import {useState, useEffect} from "react"
+import {useState} from "react"
 
+import {nanoid} from "nanoid"
+
+import shuffleHelper from "./helperFunctions/shuffleHelper"
 import Start from "./components/Start"
 import Question from "./components/Question"
 
@@ -11,17 +14,25 @@ const bla = {"response_code":0,"results":[{"category":"Geography","type":"multip
 
 function App() {
 
-let questionsAugmented = bla.results.map(el => {
-  return {
-    ...el,
-    clicked: true
-  }
-    
-})
+  let itemsAugmented = bla.results.map(el => {
+      let wrongAnswers = el.incorrect_answers.map(item => {
+        return {
+          answer: item,
+          clicked: false,
+          isCorrect: false
+        }
+      })
+      
+    return {
+      question: el.question,
+      answers: shuffleHelper([{ answer: el.correct_answer, clicked: false, isCorrect: true}, ...wrongAnswers])
+    }
 
+  })
+  
 
   
-  let [questions, setQuestions] = useState(questionsAugmented)
+  let [questions, setQuestions] = useState(itemsAugmented)
   let [quizStarted, setQuizStarted] = useState(false)
 /*
 useEffect(() => {
@@ -32,13 +43,41 @@ useEffect(() => {
   }, [])*/
   
   function startQuiz(){
-     setQuizStarted(true)  
+    setQuizStarted(true)  
+  }
+
+  function gotClicked(e) {
+    let buttonText = e.target.innerText
+    
+    let alteredQuestions = questions.map(el => {
+        let changedClicks = el.answers.map(item => {
+        
+          if (item.answer === buttonText) {
+            return {
+              ...item,
+              clicked: !item.clicked
+            }
+          }
+          else {
+            return item
+          }
+        })
+      return {
+        ...el,
+        answers: changedClicks
+      }
+      
+    })
+    
+    setQuestions(alteredQuestions)
   }
 
 
-
-
-let allQuestions = questions.map(el => <Question knowledge={el}/>)
+let allQuestions = questions.map(el => {
+  let key = nanoid()
+  return <Question knowledge={el} key={key} clickHandler={gotClicked}  />
+}
+)
 
   return (
     <div className="main-container">
