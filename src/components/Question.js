@@ -1,9 +1,13 @@
-
+import {nanoid} from "nanoid"
 
 export default function Question(props) {
 
   
-  let answers = props.knowledge.answers.map(el =>  <p className={`answer-button ${el.clicked ? "blue" : ""}`} onClick={(e) => props.clickHandler(e)}>{el.answer}</p>)
+  let answers = props.knowledge.answers.map(el => { 
+    let key = nanoid()
+    return <p key={key} className={`button answer-button ${!props.revealed && el.clicked ? "blue" : ""} ${props.revealed && el.isCorrect ? "green" : ""} ${props.revealed && el.clicked ? "rose" : ""}`} onClick={(e) => props.clickHandler(e)}>{el.answer}</p>
+  })
+  
 
   
     return (

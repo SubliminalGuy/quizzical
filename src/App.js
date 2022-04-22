@@ -4,55 +4,57 @@ import {useState} from "react"
 
 import {nanoid} from "nanoid"
 
-import shuffleHelper from "./helperFunctions/shuffleHelper"
+import augmentItems from "./helperFunctions/augmentItems"
 import Start from "./components/Start"
 import Question from "./components/Question"
 
 
-const bla = {"response_code":0,"results":[{"category":"Geography","type":"multiple","difficulty":"medium","question":"What European country is not a part of the EU?","correct_answer":"Norway","incorrect_answers":["Lithuania","Ireland","Czechia"]},{"category":"Geography","type":"multiple","difficulty":"medium","question":"Which state of the United States is the smallest?","correct_answer":"Rhode Island ","incorrect_answers":["Maine","Vermont","Massachusetts"]},{"category":"Geography","type":"multiple","difficulty":"medium","question":"What is the only country in the world with a flag that doesn't have four right angles?","correct_answer":"Nepal","incorrect_answers":["Panama","Angola","Egypt"]},{"category":"Geography","type":"multiple","difficulty":"medium","question":"The Principality of Sealand is an unrecognized micronation off the coast of what country?","correct_answer":"The United Kingdom","incorrect_answers":["Japan","Austrailia","Argentina"]},{"category":"Geography","type":"multiple","difficulty":"medium","question":"Which Canadian province has Charlottetown as its capital?","correct_answer":"Prince Edward Island","incorrect_answers":["Saskachewan","Northwest Terrirories","Ontario"]}]}
+const bla = {"response_code":0,"results":[{"category":"SGlzdG9yeQ==","type":"bXVsdGlwbGU=","difficulty":"ZWFzeQ==","question":"V2hhdCB3YXMgTWFuZnJlZCB2b24gUmljaHRob2ZlbidzIG5pY2tuYW1lPw==","correct_answer":"VGhlIFJlZCBCYXJvbg==","incorrect_answers":["VGhlIEhpZ2ggRmx5aW5nIEFjZQ==","VGhlIEJsdWUgU2VycGVudCA=","VGhlIEdlcm1hbnkgR3VubmVy"]},{"category":"SGlzdG9yeQ==","type":"bXVsdGlwbGU=","difficulty":"aGFyZA==","question":"V2hlbiB3YXMgQWRvbGYgSGl0bGVyIGFwcG9pbnRlZCBhcyBDaGFuY2VsbG9yIG9mIEdlcm1hbnk\/","correct_answer":"SmFudWFyeSAzMCwgMTkzMw==","incorrect_answers":["U2VwdGVtYmVyIDEsIDE5Mzk=","RmVicnVhcnkgMjcsIDE5MzM=","T2N0b2JlciA2LCAxOTM5"]},{"category":"SGlzdG9yeQ==","type":"bXVsdGlwbGU=","difficulty":"bWVkaXVt","question":"VGhlIEtvcmVhbiBXYXIgc3RhcnRlZCBpbiB3aGF0IHllYXI\/","correct_answer":"MTk1MA==","incorrect_answers":["MTk0NQ==","MTk2MA==","MTkxMg=="]},{"category":"SGlzdG9yeQ==","type":"bXVsdGlwbGU=","difficulty":"bWVkaXVt","question":"SW4gMTg0NSwgYSBzZXJpZXMgb2Ygd2FycyBuYW1lZCBhZnRlciB3aGljaCBpbmRpZ2Vub3VzIHBlb3BsZSBiZWdhbiBpbiBOZXcgWmVhbGFuZD8=","correct_answer":"TcSBb3Jp","incorrect_answers":["UGFwdWFucw==","QWJvcmlnaW5lcw==","UG9seW5lc2lhbnM="]},{"category":"SGlzdG9yeQ==","type":"bXVsdGlwbGU=","difficulty":"bWVkaXVt","question":"V2hlbiBkaWQgTywgQ2FuYWRhIG9mZmljaWFsbHkgYmVjb21lIHRoZSBuYXRpb25hbCBhbnRoZW0\/","correct_answer":"MTk4MA==","incorrect_answers":["MTk1MA==","MTkyMA==","MTg4MA=="]}]}
 
 
 function App() {
 
-  let itemsAugmented = bla.results.map(el => {
-      let wrongAnswers = el.incorrect_answers.map(item => {
-        return {
-          answer: item,
-          clicked: false,
-          isCorrect: false
-        }
-      })
-      
-    return {
-      question: el.question,
-      answers: shuffleHelper([{ answer: el.correct_answer, clicked: false, isCorrect: true}, ...wrongAnswers])
-    }
-
-  })
-  
-
+  // gives the useState for questions some bulk data to chew on. It seems not to work without ...
+  let itemsAugmented = augmentItems(bla)
   
   let [questions, setQuestions] = useState(itemsAugmented)
   let [quizStarted, setQuizStarted] = useState(false)
-/*
-useEffect(() => {
-    fetch("https://opentdb.com/api.php?amount=5&difficulty=medium&type=multiple")
-          .then(res => res.json())
-          .then(data => setQuestions(data.results))
-          
-  }, [])*/
+  let [revealAnswers, setRevealAnswers] = useState(false)
+  let [counter, setCounter] = useState(0)
   
-  function startQuiz(){
-    setQuizStarted(true)  
+// gets 5 questions from the API and re-wrapps them in a way useful for the app purpose
+  function fetchQuestions() {
+    fetch("https://opentdb.com/api.php?amount=5&category=23&type=multiple&encode=base64")
+          .then(res => res.json()) 
+          .then(data => augmentItems(data))
+          .then(result => setQuestions(result))
   }
+
+
+  
+ /*
+  useEffect(() => {
+    fetchQuestions()
+          
+  }, [])
+  */
+
+  function startQuiz(){
+    setQuizStarted(true) 
+    setRevealAnswers(false) 
+    fetchQuestions()
+  }
+
 
   function gotClicked(e) {
     let buttonText = e.target.innerText
     
-    let alteredQuestions = questions.map(el => {
-        let changedClicks = el.answers.map(item => {
-        
-          if (item.answer === buttonText) {
+    //check which Answer has been clicked and change the the "clicked"-property accordingly
+    setQuestions(prevState => {
+      return prevState.map(el => {
+      let changedClicks = el.answers.map(item => {
+      
+          if (item.answer.trim() === buttonText) {
             return {
               ...item,
               clicked: !item.clicked
@@ -62,27 +64,51 @@ useEffect(() => {
             return item
           }
         })
-      return {
-        ...el,
-        answers: changedClicks
-      }
-      
+        return {
+          ...el,
+          answers: changedClicks
+        }
+      })  
     })
-    
-    setQuestions(alteredQuestions)
   }
 
+  function checkAnswers() {
+    setRevealAnswers(true)
+    let correctCounter = 0;
+    questions.forEach((item) => {
+      item.answers.forEach(el => {
+        if (el.clicked && el.isCorrect) {
+          correctCounter++;
+        }
+      })
+    })
+    setCounter(correctCounter)
+  }
 
-let allQuestions = questions.map(el => {
-  let key = nanoid()
-  return <Question knowledge={el} key={key} clickHandler={gotClicked}  />
-}
-)
+  function renderCheckButton() {
+    if(quizStarted && !revealAnswers) {
+      return <button onClick={checkAnswers} className="button check-answers-button">Check answers</button>
+    }
+    else if (quizStarted && revealAnswers) {
+      return (
+        <div className="score-container">
+          <h3>You scored {counter}/5 correct answers</h3>
+          <button onClick={startQuiz} className="button play-again-button">Play again</button>
+        </div>
+      )
+    }
+  } 
+
+
+  let allQuestions = questions.map(el => {
+    let key = nanoid()
+    return <Question knowledge={el} revealed={revealAnswers} key={key} clickHandler={gotClicked}  />
+  })
 
   return (
     <div className="main-container">
       { !quizStarted ? <Start startQuiz={startQuiz}/> : allQuestions}
-      
+      {renderCheckButton()}
     </div>
   );
 }
