@@ -78,15 +78,15 @@ function App() {
           className="button check-answers-button"
           disabled={!allAnswered}
         >
-          Check answers
+          Comprobar respuestas
         </button>
       )
     }
     else if (quizStarted && revealAnswers) {
       return (
         <div className="score-container">
-          <h3>You scored {counter}/5 correct answers</h3>
-          <button onClick={startQuiz} className="button play-again-button">Play again</button>
+          <h3>Has acertado {counter}/5 respuestas</h3>
+          <button onClick={startQuiz} className="button play-again-button">Jugar de nuevo</button>
         </div>
       )
     }
