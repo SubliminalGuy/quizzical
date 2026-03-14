@@ -1,0 +1,102 @@
+[
+  {
+    "question": "¿En qué año comenzó la Guerra Civil Española?",
+    "correct_answer": "1936",
+    "incorrect_answers": ["1931", "1939", "1923"]
+  },
+  {
+    "question": "¿Quién fue el primer rey de la España unificada junto a Isabel I de Castilla?",
+    "correct_answer": "Fernando II de Aragón",
+    "incorrect_answers": ["Carlos I", "Felipe II", "Alfonso X"]
+  },
+  {
+    "question": "¿En qué año Cristóbal Colón llegó a América por primera vez?",
+    "correct_answer": "1492",
+    "incorrect_answers": ["1488", "1500", "1510"]
+  },
+  {
+    "question": "¿Cómo se llamó el período de dictadura de Francisco Franco en España?",
+    "correct_answer": "El Franquismo",
+    "incorrect_answers": ["La Restauración", "El Regeneracionismo", "La Transición"]
+  },
+  {
+    "question": "¿En qué ciudad se firmó el Tratado de Utrecht en 1713?",
+    "correct_answer": "Utrecht",
+    "incorrect_answers": ["Madrid", "París", "Lisboa"]
+  },
+  {
+    "question": "¿Qué civilización construyó el Machu Picchu en Perú?",
+    "correct_answer": "Los incas",
+    "incorrect_answers": ["Los mayas", "Los aztecas", "Los olmecas"]
+  },
+  {
+    "question": "¿En qué año se proclamó la Segunda República Española?",
+    "correct_answer": "1931",
+    "incorrect_answers": ["1923", "1936", "1939"]
+  },
+  {
+    "question": "¿Qué conquista lideró Hernán Cortés en México?",
+    "correct_answer": "La conquista del Imperio Azteca",
+    "incorrect_answers": ["La conquista del Imperio Inca", "La conquista de Cuba", "La conquista de Florida"]
+  },
+  {
+    "question": "¿Cómo se llamaba el último califa musulmán de Granada antes de la Reconquista?",
+    "correct_answer": "Boabdil",
+    "incorrect_answers": ["Abderramán III", "Al-Mansur", "Yusuf I"]
+  },
+  {
+    "question": "¿En qué año España recuperó la democracia tras la muerte de Franco?",
+    "correct_answer": "1978",
+    "incorrect_answers": ["1975", "1982", "1977"]
+  },
+  {
+    "question": "¿Quién lideró la independencia de Venezuela, Colombia y Ecuador?",
+    "correct_answer": "Simón Bolívar",
+    "incorrect_answers": ["José de San Martín", "Miguel Hidalgo", "Bernardo O'Higgins"]
+  },
+  {
+    "question": "¿En qué siglo comenzó la Reconquista de la Península Ibérica?",
+    "correct_answer": "Siglo VIII",
+    "incorrect_answers": ["Siglo X", "Siglo VI", "Siglo XII"]
+  },
+  {
+    "question": "¿Qué batalla supuso el fin del dominio napoleónico en España?",
+    "correct_answer": "Batalla de los Arapiles",
+    "incorrect_answers": ["Batalla de Bailén", "Batalla de Trafalgar", "Batalla de Vitoria"]
+  },
+  {
+    "question": "¿Cuál fue la primera ciudad fundada por los españoles en América continental?",
+    "correct_answer": "Santa María la Antigua del Darién",
+    "incorrect_answers": ["La Habana", "Buenos Aires", "Ciudad de México"]
+  },
+  {
+    "question": "¿En qué año España perdió sus últimas colonias de Cuba, Puerto Rico y Filipinas?",
+    "correct_answer": "1898",
+    "incorrect_answers": ["1810", "1868", "1902"]
+  },
+  {
+    "question": "¿Quién fue el rey español que expulsó a los judíos de España en 1492?",
+    "correct_answer": "Fernando II de Aragón e Isabel I de Castilla",
+    "incorrect_answers": ["Carlos I", "Felipe II", "Alfonso XIII"]
+  },
+  {
+    "question": "¿Cómo se llama el período de transición democrática en España tras la dictadura franquista?",
+    "correct_answer": "La Transición Española",
+    "incorrect_answers": ["La Restauración Borbónica", "El Sexenio Democrático", "La Segunda República"]
+  },
+  {
+    "question": "¿Qué cultura precolombina construyó el Templo Mayor en Tenochtitlán?",
+    "correct_answer": "Los aztecas",
+    "incorrect_answers": ["Los mayas", "Los incas", "Los toltecas"]
+  },
+  {
+    "question": "¿En qué año se fundó la ciudad de Buenos Aires de forma definitiva?",
+    "correct_answer": "1580",
+    "incorrect_answers": ["1516", "1536", "1610"]
+  },
+  {
+    "question": "¿Quién fue el primer presidente de México tras su independencia?",
+    "correct_answer": "Guadalupe Victoria",
+    "incorrect_answers": ["Agustín de Iturbide", "Benito Juárez", "Miguel Hidalgo"]
+  }
+]
