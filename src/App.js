@@ -50,9 +50,30 @@ function App() {
     setCounter(correctCounter)
   }
 
+  const answeredCount = questions.filter(q => q.answers.some(a => a.clicked)).length
+  const totalCount = questions.length
+
+  function getScoreEmoji(score, total) {
+    const pct = score / total
+    if (pct === 1)   return "🏆"
+    if (pct >= 0.8)  return "🔥"
+    if (pct >= 0.6)  return "😎"
+    if (pct >= 0.4)  return "🤔"
+    return "💪"
+  }
+
+  function getScoreMessage(score, total) {
+    const pct = score / total
+    if (pct === 1)   return "¡Perfecto! Eres un crack."
+    if (pct >= 0.8)  return "¡Muy bien! Casi lo bordas."
+    if (pct >= 0.6)  return "¡Bien hecho! Sigue así."
+    if (pct >= 0.4)  return "No está mal. ¡Puedes mejorar!"
+    return "¡Inténtalo de nuevo!"
+  }
+
   function renderCheckButton() {
     if (quizStarted && !revealAnswers) {
-      const allAnswered = questions.length > 0 && questions.every(q => q.answers.some(a => a.clicked))
+      const allAnswered = totalCount > 0 && answeredCount === totalCount
       return (
         <button
           onClick={checkAnswers}
@@ -66,8 +87,15 @@ function App() {
     else if (quizStarted && revealAnswers) {
       return (
         <div className="score-container">
-          <h3>Has acertado {counter}/5 respuestas</h3>
-          <button onClick={startQuiz} className="button play-again-button">Jugar de nuevo</button>
+          <div className="score-emoji">{getScoreEmoji(counter, totalCount)}</div>
+          <p className="score-result-text">
+            {getScoreMessage(counter, totalCount)}<br/>
+            <span style={{color: "#C084FC"}}>{counter}</span>
+            <span style={{color: "rgba(255,255,255,0.5)"}}> / {totalCount}</span>
+          </p>
+          <div className="score-actions">
+            <button onClick={startQuiz} className="button play-again-button">Jugar de nuevo</button>
+          </div>
         </div>
       )
     }
@@ -87,7 +115,25 @@ function App() {
 
   return (
     <div className="main-container">
-      {!quizStarted ? <Start startQuiz={startQuiz} /> : questionElements}
+      {!quizStarted
+        ? <Start startQuiz={startQuiz} />
+        : (
+          <>
+            {!revealAnswers && (
+              <div className="progress-bar-container">
+                <div className="progress-label">{answeredCount} / {totalCount} respondidas</div>
+                <div className="progress-track">
+                  <div
+                    className="progress-fill"
+                    style={{ width: totalCount > 0 ? `${(answeredCount / totalCount) * 100}%` : '0%' }}
+                  />
+                </div>
+              </div>
+            )}
+            {questionElements}
+          </>
+        )
+      }
       {renderCheckButton()}
     </div>
   )
