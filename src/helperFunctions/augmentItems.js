@@ -1,3 +1,4 @@
+import {nanoid} from "nanoid"
 
 export default function augmentItems(arr) {
     return arr.results.map(el => {
@@ -9,6 +10,7 @@ export default function augmentItems(arr) {
             }
         })
         return {
+        id: nanoid(),
         question: atob(el.question),
         answers: shuffle([{ answer: atob(el.correct_answer), clicked: false, isCorrect: true}, ...wrongAnswers])
         }
