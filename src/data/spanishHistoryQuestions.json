@@ -1,102 +1,192 @@
 [
   {
-    "question": "¿En qué año comenzó la Guerra Civil Española?",
-    "correct_answer": "1936",
-    "incorrect_answers": ["1931", "1939", "1923"]
+    "question": "¿En qué año los musulmanes cruzaron el Estrecho de Gibraltar e invadieron la Península Ibérica?",
+    "correct_answer": "711",
+    "incorrect_answers": ["718", "732", "756"]
   },
   {
-    "question": "¿Quién fue el primer rey de la España unificada junto a Isabel I de Castilla?",
-    "correct_answer": "Fernando II de Aragón",
-    "incorrect_answers": ["Carlos I", "Felipe II", "Alfonso X"]
+    "question": "¿Cómo se llamaba la España bajo dominio árabe?",
+    "correct_answer": "Al-Ándalus",
+    "incorrect_answers": ["Hispania", "Califato Árabe", "Mauritania"]
   },
   {
-    "question": "¿En qué año Cristóbal Colón llegó a América por primera vez?",
+    "question": "¿Qué batalla marcó el inicio de la Reconquista cristiana?",
+    "correct_answer": "Batalla de Covadonga",
+    "incorrect_answers": ["Batalla de las Navas de Tolosa", "Batalla del Guadalete", "Batalla de Roncesvalles"]
+  },
+  {
+    "question": "¿Quién fue el líder asturiano que inició la Reconquista tras la batalla de Covadonga?",
+    "correct_answer": "Don Pelayo",
+    "incorrect_answers": ["Alfonso II", "Rodrigo Díaz de Vivar", "Ramiro I"]
+  },
+  {
+    "question": "¿Cuál fue la capital del Califato de Córdoba en su época de mayor esplendor?",
+    "correct_answer": "Córdoba",
+    "incorrect_answers": ["Sevilla", "Granada", "Toledo"]
+  },
+  {
+    "question": "¿En qué siglo alcanzó el Califato de Córdoba su máximo esplendor bajo Abderramán III?",
+    "correct_answer": "Siglo X",
+    "incorrect_answers": ["Siglo VIII", "Siglo XII", "Siglo IX"]
+  },
+  {
+    "question": "¿En qué año Alfonso VI de Castilla conquistó Toledo a los musulmanes?",
+    "correct_answer": "1085",
+    "incorrect_answers": ["1212", "1099", "1147"]
+  },
+  {
+    "question": "¿Qué batalla en 1212 supuso un golpe decisivo contra los almohades y aceleró la Reconquista?",
+    "correct_answer": "Batalla de las Navas de Tolosa",
+    "incorrect_answers": ["Batalla de Covadonga", "Batalla del Salado", "Batalla de Bailén"]
+  },
+  {
+    "question": "¿Cómo se llamaba el famoso guerrero castellano medieval conocido por conquistar Valencia?",
+    "correct_answer": "El Cid (Rodrigo Díaz de Vivar)",
+    "incorrect_answers": ["Gonzalo de Córdoba", "Álvaro de Luna", "Rodrigo de Vizcaya"]
+  },
+  {
+    "question": "¿En qué año cayó Granada, el último reino musulmán de la Península Ibérica?",
     "correct_answer": "1492",
-    "incorrect_answers": ["1488", "1500", "1510"]
+    "incorrect_answers": ["1340", "1469", "1516"]
   },
   {
-    "question": "¿Cómo se llamó el período de dictadura de Francisco Franco en España?",
-    "correct_answer": "El Franquismo",
-    "incorrect_answers": ["La Restauración", "El Regeneracionismo", "La Transición"]
+    "question": "¿Cómo se llamó el último rey nazarí de Granada que entregó la ciudad a los Reyes Católicos?",
+    "correct_answer": "Boabdil",
+    "incorrect_answers": ["Abderramán III", "Al-Mansur", "Muhammad XII"]
   },
   {
-    "question": "¿En qué ciudad se firmó el Tratado de Utrecht en 1713?",
-    "correct_answer": "Utrecht",
-    "incorrect_answers": ["Madrid", "París", "Lisboa"]
+    "question": "¿En qué año los Reyes Católicos expulsaron a los judíos de España?",
+    "correct_answer": "1492",
+    "incorrect_answers": ["1478", "1502", "1609"]
   },
   {
-    "question": "¿Qué civilización construyó el Machu Picchu en Perú?",
-    "correct_answer": "Los incas",
-    "incorrect_answers": ["Los mayas", "Los aztecas", "Los olmecas"]
+    "question": "¿En qué año se fundó la Inquisición española bajo los Reyes Católicos?",
+    "correct_answer": "1478",
+    "incorrect_answers": ["1492", "1512", "1460"]
+  },
+  {
+    "question": "¿Quién fue el primer Gran Inquisidor de España?",
+    "correct_answer": "Tomás de Torquemada",
+    "incorrect_answers": ["Francisco Jiménez de Cisneros", "Diego de Deza", "Pedro Arbués"]
+  },
+  {
+    "question": "¿En qué año Felipe II de España unió las coronas de España y Portugal bajo su reinado?",
+    "correct_answer": "1580",
+    "incorrect_answers": ["1556", "1492", "1640"]
+  },
+  {
+    "question": "¿Cuántos años duró la Unión Ibérica, el período en que Portugal y España estuvieron bajo la misma corona?",
+    "correct_answer": "60 años",
+    "incorrect_answers": ["30 años", "80 años", "45 años"]
+  },
+  {
+    "question": "¿En qué año Portugal recuperó su independencia de España?",
+    "correct_answer": "1640",
+    "incorrect_answers": ["1580", "1668", "1714"]
+  },
+  {
+    "question": "¿Qué desastre devastó Lisboa en 1755, siendo uno de los terremotos más mortíferos de la historia europea?",
+    "correct_answer": "El terremoto de Lisboa",
+    "incorrect_answers": ["La Gran Plaga de Lisboa", "El incendio de Lisboa", "La inundación del Tajo"]
+  },
+  {
+    "question": "¿Quién fue el primer rey de Portugal como nación independiente?",
+    "correct_answer": "Alfonso I (Afonso Henriques)",
+    "incorrect_answers": ["Sancho I", "Juan I", "Sebastián I"]
+  },
+  {
+    "question": "¿Qué territorio perdió España con el Tratado de Utrecht en 1713?",
+    "correct_answer": "Gibraltar",
+    "incorrect_answers": ["Cerdeña", "Sicilia", "Menorca"]
+  },
+  {
+    "question": "¿En qué año comenzó la Guerra de la Independencia española contra Napoleón?",
+    "correct_answer": "1808",
+    "incorrect_answers": ["1804", "1812", "1799"]
+  },
+  {
+    "question": "¿En qué ciudad se aprobó la primera constitución liberal española en 1812?",
+    "correct_answer": "Cádiz",
+    "incorrect_answers": ["Madrid", "Sevilla", "Barcelona"]
+  },
+  {
+    "question": "¿Con qué apodo popular se conoce la Constitución española de 1812?",
+    "correct_answer": "La Pepa",
+    "incorrect_answers": ["La Magna", "La Gloriosa", "La Liberal"]
+  },
+  {
+    "question": "¿En qué año se proclamó la Primera República Española?",
+    "correct_answer": "1873",
+    "incorrect_answers": ["1868", "1876", "1898"]
+  },
+  {
+    "question": "¿En qué año España perdió Cuba, Puerto Rico y Filipinas tras la guerra con Estados Unidos?",
+    "correct_answer": "1898",
+    "incorrect_answers": ["1868", "1902", "1880"]
   },
   {
     "question": "¿En qué año se proclamó la Segunda República Española?",
     "correct_answer": "1931",
-    "incorrect_answers": ["1923", "1936", "1939"]
+    "incorrect_answers": ["1923", "1936", "1929"]
   },
   {
-    "question": "¿Qué conquista lideró Hernán Cortés en México?",
-    "correct_answer": "La conquista del Imperio Azteca",
-    "incorrect_answers": ["La conquista del Imperio Inca", "La conquista de Cuba", "La conquista de Florida"]
+    "question": "¿En qué año comenzó la Guerra Civil Española?",
+    "correct_answer": "1936",
+    "incorrect_answers": ["1931", "1934", "1939"]
   },
   {
-    "question": "¿Cómo se llamaba el último califa musulmán de Granada antes de la Reconquista?",
-    "correct_answer": "Boabdil",
-    "incorrect_answers": ["Abderramán III", "Al-Mansur", "Yusuf I"]
+    "question": "¿Cuándo murió el dictador Francisco Franco, poniendo fin a casi 40 años de régimen?",
+    "correct_answer": "20 de noviembre de 1975",
+    "incorrect_answers": ["1 de octubre de 1973", "18 de julio de 1976", "23 de febrero de 1981"]
   },
   {
-    "question": "¿En qué año España recuperó la democracia tras la muerte de Franco?",
+    "question": "¿Quién fue el primer presidente del gobierno de la España democrática?",
+    "correct_answer": "Adolfo Suárez",
+    "incorrect_answers": ["Felipe González", "Leopoldo Calvo-Sotelo", "Manuel Fraga"]
+  },
+  {
+    "question": "¿En qué año tuvo lugar el intento de golpe de estado conocido como el 23-F en España?",
+    "correct_answer": "1981",
+    "incorrect_answers": ["1979", "1983", "1977"]
+  },
+  {
+    "question": "¿Quién lideró el asalto al Congreso de los Diputados durante el 23-F?",
+    "correct_answer": "Antonio Tejero",
+    "incorrect_answers": ["Alfonso Armada", "Jaime Milans del Bosch", "Manuel Gutiérrez Mellado"]
+  },
+  {
+    "question": "¿En qué año se aprobó la Constitución española que rige actualmente?",
     "correct_answer": "1978",
-    "incorrect_answers": ["1975", "1982", "1977"]
+    "incorrect_answers": ["1975", "1977", "1982"]
   },
   {
-    "question": "¿Quién lideró la independencia de Venezuela, Colombia y Ecuador?",
-    "correct_answer": "Simón Bolívar",
-    "incorrect_answers": ["José de San Martín", "Miguel Hidalgo", "Bernardo O'Higgins"]
+    "question": "¿En qué año España ingresó en la Comunidad Económica Europea (actual Unión Europea)?",
+    "correct_answer": "1986",
+    "incorrect_answers": ["1982", "1992", "1978"]
   },
   {
-    "question": "¿En qué siglo comenzó la Reconquista de la Península Ibérica?",
-    "correct_answer": "Siglo VIII",
-    "incorrect_answers": ["Siglo X", "Siglo VI", "Siglo XII"]
+    "question": "¿Cómo se llamó la revolución portuguesa de 1974 que acabó con la dictadura de Salazar y Caetano?",
+    "correct_answer": "Revolución de los Claveles",
+    "incorrect_answers": ["Revolución de las Rosas", "Revolución de Abril", "Revolución de los Tulipanes"]
   },
   {
-    "question": "¿Qué batalla supuso el fin del dominio napoleónico en España?",
-    "correct_answer": "Batalla de los Arapiles",
-    "incorrect_answers": ["Batalla de Bailén", "Batalla de Trafalgar", "Batalla de Vitoria"]
+    "question": "¿Quién fue el dictador que gobernó Portugal durante casi 40 años hasta 1968?",
+    "correct_answer": "António de Oliveira Salazar",
+    "incorrect_answers": ["Marcelo Caetano", "Óscar Carmona", "Manuel de Arriaga"]
   },
   {
-    "question": "¿Cuál fue la primera ciudad fundada por los españoles en América continental?",
-    "correct_answer": "Santa María la Antigua del Darién",
-    "incorrect_answers": ["La Habana", "Buenos Aires", "Ciudad de México"]
+    "question": "¿En qué año fue expulsado de España el rey Alfonso XIII, dando paso a la Segunda República?",
+    "correct_answer": "1931",
+    "incorrect_answers": ["1923", "1929", "1936"]
   },
   {
-    "question": "¿En qué año España perdió sus últimas colonias de Cuba, Puerto Rico y Filipinas?",
-    "correct_answer": "1898",
-    "incorrect_answers": ["1810", "1868", "1902"]
+    "question": "¿Qué pueblo prerromano habitaba la Península Ibérica antes de la conquista romana y da nombre a la actual España?",
+    "correct_answer": "Los íberos",
+    "incorrect_answers": ["Los celtas", "Los fenicios", "Los celtíberos"]
   },
   {
-    "question": "¿Quién fue el rey español que expulsó a los judíos de España en 1492?",
-    "correct_answer": "Fernando II de Aragón e Isabel I de Castilla",
-    "incorrect_answers": ["Carlos I", "Felipe II", "Alfonso XIII"]
-  },
-  {
-    "question": "¿Cómo se llama el período de transición democrática en España tras la dictadura franquista?",
-    "correct_answer": "La Transición Española",
-    "incorrect_answers": ["La Restauración Borbónica", "El Sexenio Democrático", "La Segunda República"]
-  },
-  {
-    "question": "¿Qué cultura precolombina construyó el Templo Mayor en Tenochtitlán?",
-    "correct_answer": "Los aztecas",
-    "incorrect_answers": ["Los mayas", "Los incas", "Los toltecas"]
-  },
-  {
-    "question": "¿En qué año se fundó la ciudad de Buenos Aires de forma definitiva?",
-    "correct_answer": "1580",
-    "incorrect_answers": ["1516", "1536", "1610"]
-  },
-  {
-    "question": "¿Quién fue el primer presidente de México tras su independencia?",
-    "correct_answer": "Guadalupe Victoria",
-    "incorrect_answers": ["Agustín de Iturbide", "Benito Juárez", "Miguel Hidalgo"]
+    "question": "¿En qué año los romanos completaron la conquista de Hispania con la toma de Numancia?",
+    "correct_answer": "133 a.C.",
+    "incorrect_answers": ["218 a.C.", "19 a.C.", "49 a.C."]
   }
 ]
