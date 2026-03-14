@@ -1,10 +1,10 @@
 
 import './App.css';
-import {useState, useEffect} from "react"
+import { useState } from "react"
+import { nanoid } from "nanoid"
 
-import {nanoid} from "nanoid"
-
-import augmentItems from "./helperFunctions/augmentItems"
+import loadLocalQuestions from "./helperFunctions/loadLocalQuestions"
+import allQuestions from "./data/spanishHistoryQuestions.json"
 import Start from "./components/Start"
 import Question from "./components/Question"
 
@@ -15,30 +15,11 @@ function App() {
   let [quizStarted, setQuizStarted] = useState(false)
   let [revealAnswers, setRevealAnswers] = useState(false)
   let [counter, setCounter] = useState(0)
-  let [categories, setCategories] = useState([])
-  let [category, setCategory] = useState("")
-  let [difficulty, setDifficulty] = useState("")
 
-  useEffect(() => {
-    fetch("https://opentdb.com/api_category.php")
-      .then(res => res.json())
-      .then(data => setCategories(data.trivia_categories))
-  }, [])
-
-  function fetchQuestions() {
-    let url = `https://opentdb.com/api.php?amount=5&type=multiple&encode=base64`
-    if (category) url += `&category=${category}`
-    if (difficulty) url += `&difficulty=${difficulty}`
-    fetch(url)
-          .then(res => res.json())
-          .then(data => augmentItems(data))
-          .then(result => setQuestions(result))
-  }
-
-  function startQuiz(){
+  function startQuiz() {
     setQuizStarted(true)
     setRevealAnswers(false)
-    fetchQuestions()
+    setQuestions(loadLocalQuestions(allQuestions))
   }
 
   function gotClicked(questionId, answerText) {
@@ -58,11 +39,11 @@ function App() {
 
   function checkAnswers() {
     setRevealAnswers(true)
-    let correctCounter = 0;
+    let correctCounter = 0
     questions.forEach((item) => {
       item.answers.forEach(el => {
         if (el.clicked && el.isCorrect) {
-          correctCounter++;
+          correctCounter++
         }
       })
     })
@@ -70,7 +51,7 @@ function App() {
   }
 
   function renderCheckButton() {
-    if(quizStarted && !revealAnswers) {
+    if (quizStarted && !revealAnswers) {
       const allAnswered = questions.length > 0 && questions.every(q => q.answers.some(a => a.clicked))
       return (
         <button
@@ -92,8 +73,7 @@ function App() {
     }
   }
 
-
-  let allQuestions = questions.map(el => {
+  let questionElements = questions.map(el => {
     let key = nanoid()
     return (
       <Question
@@ -107,20 +87,10 @@ function App() {
 
   return (
     <div className="main-container">
-      { !quizStarted
-        ? <Start
-            startQuiz={startQuiz}
-            categories={categories}
-            category={category}
-            difficulty={difficulty}
-            setCategory={setCategory}
-            setDifficulty={setDifficulty}
-          />
-        : allQuestions
-      }
+      {!quizStarted ? <Start startQuiz={startQuiz} /> : questionElements}
       {renderCheckButton()}
     </div>
-  );
+  )
 }
 
 export default App;
