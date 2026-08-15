@@ -1,142 +1,154 @@
-
 import './App.css';
 import { useState } from "react"
-import { nanoid } from "nanoid"
 
-import loadLocalQuestions from "./helperFunctions/loadLocalQuestions"
-import allQuestions from "./data/spanishHistoryQuestions.json"
+import buildRounds, {
+  MAX_POINTS_PER_ROUND,
+  scoreArtist,
+  scoreYear
+} from "./helperFunctions/buildRounds"
+import allTracks from "./data/technoTracks.json"
+
 import Start from "./components/Start"
-import Question from "./components/Question"
+import TrackPlayer from "./components/TrackPlayer"
+import ArtistChoice from "./components/ArtistChoice"
+import YearTimeline from "./components/YearTimeline"
+import RoundReveal from "./components/RoundReveal"
+import Results from "./components/Results"
 
+const ROUND_COUNT = 5
 
-function App() {
+export default function App() {
 
-  let [questions, setQuestions] = useState([])
-  let [quizStarted, setQuizStarted] = useState(false)
-  let [revealAnswers, setRevealAnswers] = useState(false)
-  let [counter, setCounter] = useState(0)
+  const [screen, setScreen] = useState("start")      // start | game | results
+  const [rounds, setRounds] = useState([])
+  const [roundIndex, setRoundIndex] = useState(0)
+  const [guessArtist, setGuessArtist] = useState(null)
+  const [guessYear, setGuessYear] = useState(null)
+  const [revealed, setRevealed] = useState(false)
+  const [results, setResults] = useState([])
 
-  function startQuiz() {
-    setQuizStarted(true)
-    setRevealAnswers(false)
-    setQuestions(loadLocalQuestions(allQuestions))
+  const round = rounds[roundIndex]
+  const score = results.reduce((sum, r) => sum + r.artistPoints + r.yearPoints, 0)
+  const maxScore = ROUND_COUNT * MAX_POINTS_PER_ROUND
+  const isLastRound = roundIndex === rounds.length - 1
+
+  function startGame() {
+    setRounds(buildRounds(allTracks, ROUND_COUNT))
+    setRoundIndex(0)
+    setResults([])
+    resetRound()
+    setScreen("game")
   }
 
-  function gotClicked(questionId, answerText) {
-    setQuestions(prevState => {
-      return prevState.map(el => {
-        if (el.id !== questionId) return el
-        let changedClicks = el.answers.map(item => {
-          if (item.answer.trim() === answerText) {
-            return { ...item, clicked: true }
-          }
-          return { ...item, clicked: false }
-        })
-        return { ...el, answers: changedClicks }
-      })
-    })
+  function resetRound() {
+    setGuessArtist(null)
+    setGuessYear(null)
+    setRevealed(false)
   }
 
-  function checkAnswers() {
-    setRevealAnswers(true)
-    let correctCounter = 0
-    questions.forEach((item) => {
-      item.answers.forEach(el => {
-        if (el.clicked && el.isCorrect) {
-          correctCounter++
-        }
-      })
-    })
-    setCounter(correctCounter)
+  function revealRound() {
+    const artistPoints = scoreArtist(round.track, guessArtist)
+    const yearPoints = scoreYear(round.track, guessYear)
+    setResults(prev => [...prev, {
+      id: round.id,
+      track: round.track,
+      guessArtist,
+      guessYear,
+      artistPoints,
+      yearPoints
+    }])
+    setRevealed(true)
   }
 
-  const answeredCount = questions.filter(q => q.answers.some(a => a.clicked)).length
-  const totalCount = questions.length
-
-  function getScoreEmoji(score, total) {
-    const pct = score / total
-    if (pct === 1)   return "🏆"
-    if (pct >= 0.8)  return "🔥"
-    if (pct >= 0.6)  return "😎"
-    if (pct >= 0.4)  return "🤔"
-    return "💪"
-  }
-
-  function getScoreMessage(score, total) {
-    const pct = score / total
-    if (pct === 1)   return "¡Perfecto! Eres un crack."
-    if (pct >= 0.8)  return "¡Muy bien! Casi lo bordas."
-    if (pct >= 0.6)  return "¡Bien hecho! Sigue así."
-    if (pct >= 0.4)  return "No está mal. ¡Puedes mejorar!"
-    return "¡Inténtalo de nuevo!"
-  }
-
-  function renderCheckButton() {
-    if (quizStarted && !revealAnswers) {
-      const allAnswered = totalCount > 0 && answeredCount === totalCount
-      return (
-        <button
-          onClick={checkAnswers}
-          className="button check-answers-button"
-          disabled={!allAnswered}
-        >
-          Comprobar respuestas
-        </button>
-      )
+  function nextRound() {
+    if (isLastRound) {
+      setScreen("results")
+      return
     }
-    else if (quizStarted && revealAnswers) {
-      return (
-        <div className="score-container">
-          <div className="score-emoji">{getScoreEmoji(counter, totalCount)}</div>
-          <p className="score-result-text">
-            {getScoreMessage(counter, totalCount)}<br/>
-            <span style={{color: "#C084FC"}}>{counter}</span>
-            <span style={{color: "rgba(255,255,255,0.5)"}}> / {totalCount}</span>
-          </p>
-          <div className="score-actions">
-            <button onClick={startQuiz} className="button play-again-button">Jugar de nuevo</button>
-          </div>
-        </div>
-      )
-    }
+    setRoundIndex(prev => prev + 1)
+    resetRound()
   }
 
-  let questionElements = questions.map(el => {
-    let key = nanoid()
+  if (screen === "start") {
     return (
-      <Question
-        knowledge={el}
-        revealed={revealAnswers}
-        key={key}
-        clickHandler={gotClicked}
-      />
+      <div className="main-container">
+        <Start startGame={startGame} roundCount={ROUND_COUNT} />
+      </div>
     )
-  })
+  }
+
+  if (screen === "results") {
+    return (
+      <div className="main-container">
+        <Results
+          results={results}
+          score={score}
+          maxScore={maxScore}
+          onRestart={startGame}
+        />
+      </div>
+    )
+  }
+
+  const currentResult = revealed ? results[results.length - 1] : null
 
   return (
     <div className="main-container">
-      {!quizStarted
-        ? <Start startQuiz={startQuiz} />
-        : (
-          <>
-            {!revealAnswers && (
-              <div className="progress-bar-container">
-                <div className="progress-label">{answeredCount} / {totalCount} respondidas</div>
-                <div className="progress-track">
-                  <div
-                    className="progress-fill"
-                    style={{ width: totalCount > 0 ? `${(answeredCount / totalCount) * 100}%` : '0%' }}
-                  />
-                </div>
-              </div>
-            )}
-            {questionElements}
-          </>
-        )
-      }
-      {renderCheckButton()}
+      <header className="game-bar">
+        <div className="round-dots">
+          {rounds.map((r, i) => (
+            <span
+              key={r.id}
+              className={`round-dot${i === roundIndex ? " dot-active" : ""}${i < roundIndex ? " dot-done" : ""}`}
+            />
+          ))}
+        </div>
+        <p className="game-bar-label">
+          Track {roundIndex + 1} / {rounds.length}
+        </p>
+        <p className="game-bar-score">{score} Pkt.</p>
+      </header>
+
+      <TrackPlayer track={round.track} revealed={revealed} />
+
+      <ArtistChoice
+        options={round.artistOptions}
+        guess={guessArtist}
+        correctArtist={round.track.artist}
+        revealed={revealed}
+        active={!revealed && !guessArtist}
+        onSelect={setGuessArtist}
+      />
+
+      <YearTimeline
+        guess={guessYear}
+        correctYear={round.track.year}
+        revealed={revealed}
+        active={!revealed && Boolean(guessArtist)}
+        locked={!revealed && !guessArtist}
+        onSelect={setGuessYear}
+      />
+
+      {!revealed && (
+        <button
+          className="button primary-button"
+          onClick={revealRound}
+          disabled={!guessArtist || !guessYear}
+        >
+          {!guessArtist || !guessYear ? "Erst tippen …" : "Auflösen"}
+        </button>
+      )}
+
+      {revealed && currentResult && (
+        <RoundReveal
+          track={round.track}
+          artistPoints={currentResult.artistPoints}
+          yearPoints={currentResult.yearPoints}
+          guessYear={currentResult.guessYear}
+          isLastRound={isLastRound}
+          onNext={nextRound}
+        />
+      )}
     </div>
   )
 }
-
-export default App;
