@@ -1,26 +1,52 @@
 import { useEffect, useRef, useState } from "react"
+import fetchPreview from "../helperFunctions/fetchPreview"
 
 const BAR_DELAYS = [0, 0.18, 0.36, 0.12, 0.42, 0.24, 0.06]
+
+const NOTES = {
+  loading: "Snippet wird gesucht …",
+  none: "Für diesen Track gibt es kein Snippet — der DJ legt von Hand auf.",
+  error: "Snippet-Suche nicht erreichbar — der DJ legt von Hand auf."
+}
 
 export default function TrackPlayer(props) {
   const { track, revealed } = props
   const [playing, setPlaying] = useState(false)
+  const [status, setStatus] = useState("loading")   // loading | ready | none | error
+  const [preview, setPreview] = useState(null)
   const audioRef = useRef(null)
 
-  // Every new track starts silent and from the top.
+  // Jeder neue Track startet stumm, von vorn und mit frischer Snippet-Suche.
   useEffect(() => {
+    let cancelled = false
+
     setPlaying(false)
+    setPreview(null)
+    setStatus("loading")
+
     const audio = audioRef.current
     if (audio) {
       audio.pause()
       audio.currentTime = 0
     }
+
+    fetchPreview(track)
+      .then(result => {
+        if (cancelled) return
+        setPreview(result)
+        setStatus(result ? "ready" : "none")
+      })
+      .catch(() => {
+        if (!cancelled) setStatus("error")
+      })
+
+    return () => { cancelled = true }
   }, [track])
 
   function togglePlay() {
     const audio = audioRef.current
     if (!audio) {
-      // No preview file yet — the button only drives the visuals for now.
+      // Ohne Snippet treibt der Button nur die Animation.
       setPlaying(prev => !prev)
       return
     }
@@ -32,13 +58,17 @@ export default function TrackPlayer(props) {
     setPlaying(prev => !prev)
   }
 
+  const cover = revealed && preview && preview.artworkUrl
+
   return (
     <div className={`track-player${playing ? " is-playing" : ""}`}>
       <div className="vinyl-stage">
         <div className={`vinyl${playing ? " vinyl-spinning" : ""}`}>
-          <div className="vinyl-label">
-            {revealed ? track.year : "?"}
-          </div>
+          {cover ? (
+            <img className="vinyl-cover" src={preview.artworkUrl} alt="" />
+          ) : (
+            <div className="vinyl-label">{revealed ? track.year : "?"}</div>
+          )}
         </div>
       </div>
 
@@ -64,18 +94,20 @@ export default function TrackPlayer(props) {
         ))}
       </div>
 
-      <button className="button play-button" onClick={togglePlay}>
-        {playing ? "❙❙ Pause" : "▶ Play"}
+      <button
+        className="button play-button"
+        onClick={togglePlay}
+        disabled={status === "loading"}
+      >
+        {status === "loading" ? "Lädt …" : playing ? "❙❙ Pause" : "▶ Play"}
       </button>
 
-      {!track.previewUrl && (
-        <p className="player-note">Audio-Snippets folgen — bis dahin legt der DJ von Hand auf.</p>
-      )}
+      {status !== "ready" && <p className="player-note">{NOTES[status]}</p>}
 
-      {track.previewUrl && (
+      {status === "ready" && (
         <audio
           ref={audioRef}
-          src={track.previewUrl}
+          src={preview.previewUrl}
           onEnded={() => setPlaying(false)}
         />
       )}
