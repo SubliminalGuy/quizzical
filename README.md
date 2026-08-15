@@ -1,70 +1,53 @@
-# Getting Started with Create React App
+# Ravehister — 90er Techno & Elektro Ratespiel
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Ein Musik-Ratespiel nach Hitster-Vorbild: Track anhören, die **Gruppe** tippen und
+das **Erscheinungsjahr** auf dem Zeitstrahl von 1990 bis 1999 setzen.
 
-## Available Scripts
+## Spielablauf
 
-In the project directory, you can run:
+1. Ein Track aus dem Bestand wird gezogen (Titel und Interpret bleiben verdeckt).
+2. **Schritt 1 — Gruppe:** vier Antwortmöglichkeiten, Fehlvorschläge kommen
+   bevorzugt aus demselben Genre. Treffer: **+2 Punkte**.
+3. **Schritt 2 — Jahr:** ein Zeitstrahl mit den Jahren '90 bis '99.
+   Punktlandung: **+3 Punkte**, ein Jahr daneben: **+1 Punkt**.
+4. Auflösung mit Punkteverteilung, danach der nächste Track.
+5. Nach 5 Tracks folgt der Endstand mit DJ-Rang und Trackliste (max. 25 Punkte).
 
-### `npm start`
+## Stand der Umsetzung
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Die Oberfläche und die komplette Spielmechanik stehen. Die Audio-Wiedergabe ist
+vorbereitet, aber noch nicht mit Inhalten belegt:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- `src/data/technoTracks.json` enthält 50 Tracks mit Titel, Interpret, Jahr und Genre.
+  Das Feld `previewUrl` ist überall `null`.
+- Sobald dort eine Audio-URL eingetragen wird, spielt `TrackPlayer` sie über ein
+  `<audio>`-Element ab; ohne URL steuert der Play-Button nur die Animation.
 
-### `npm test`
+## Aufbau
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+src/
+  App.js                        Zustandsmaschine: start → game → results
+  components/
+    Start.js                    Startbildschirm mit Regeln
+    TrackPlayer.js              Plattenteller, Equalizer, Play/Pause
+    ArtistChoice.js             Schritt 1: Gruppe raten
+    YearTimeline.js             Schritt 2: Jahr auf dem Zeitstrahl
+    RoundReveal.js              Auflösung einer Runde
+    Results.js                  Endstand mit Rang und Trackliste
+  helperFunctions/
+    buildRounds.js              Runden bauen, Antwortoptionen, Punktevergabe
+  data/
+    technoTracks.json           Trackbestand
+```
 
-### `npm run build`
+## Entwicklung
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+npm install
+npm start    # Entwicklungsserver auf http://localhost:3000
+npm test     # Tests
+npm run build
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Das Projekt basiert auf [Create React App](https://github.com/facebook/create-react-app).
