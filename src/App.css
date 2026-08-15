@@ -304,6 +304,14 @@ body {
   background: linear-gradient(135deg, var(--neon-pink), var(--neon-cyan));
 }
 
+.vinyl-cover {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.15);
+}
+
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
