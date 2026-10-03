@@ -71,6 +71,24 @@ body[data-theme="techno"] {
   --radius-sm: 14px;
 }
 
+body[data-theme="eighties"] {
+  --bg-deep: #08202c;
+  --bg-panel: rgba(13, 49, 64, 0.84);
+  --accent: #ffd23f;
+  --accent-2: #4ee0d0;
+  --good: #7ee081;
+  --warn: #ffa23f;
+  --bad: #ff5e5b;
+  --text: #f2fbff;
+  --text-dim: rgba(242, 251, 255, 0.55);
+  --border: rgba(78, 224, 208, 0.26);
+  --btn-text: #06202a;
+  --grad: linear-gradient(100deg, #ffd23f, #ff5e5b 55%, #4ee0d0);
+  --glow: rgba(78, 224, 208, 0.3);
+  --radius-lg: 18px;
+  --radius-sm: 10px;
+}
+
 body[data-theme="hiphop"] {
   --bg-deep: #14100b;
   --bg-panel: rgba(46, 35, 22, 0.84);
@@ -116,6 +134,16 @@ body[data-theme="techno"] {
     radial-gradient(circle at 15% 0%, rgba(255, 46, 136, 0.28), transparent 45%),
     radial-gradient(circle at 85% 10%, rgba(34, 224, 255, 0.22), transparent 45%),
     radial-gradient(circle at 50% 100%, rgba(168, 85, 247, 0.25), transparent 55%),
+    var(--bg-deep);
+  background-attachment: fixed;
+}
+
+body[data-theme="eighties"] {
+  background:
+    radial-gradient(circle at 14% 0%, rgba(255, 94, 91, 0.26), transparent 44%),
+    radial-gradient(circle at 86% 6%, rgba(255, 210, 63, 0.2), transparent 44%),
+    radial-gradient(circle at 50% 100%, rgba(78, 224, 208, 0.22), transparent 55%),
+    repeating-linear-gradient(0deg, rgba(78, 224, 208, 0.04) 0 1px, transparent 1px 44px),
     var(--bg-deep);
   background-attachment: fixed;
 }
@@ -285,6 +313,18 @@ body[data-theme="hiphop"] {
   --btn-text: #12001f;
   --grad: linear-gradient(100deg, #ff2e88, #a855f7 55%, #22e0ff);
   --radius-lg: 22px;
+}
+
+.genre-eighties {
+  --accent: #ffd23f;
+  --accent-2: #4ee0d0;
+  --bg-panel: rgba(13, 49, 64, 0.92);
+  --border: rgba(78, 224, 208, 0.4);
+  --glow: rgba(255, 210, 63, 0.26);
+  --text-dim: rgba(242, 251, 255, 0.55);
+  --btn-text: #06202a;
+  --grad: linear-gradient(100deg, #ffd23f, #ff5e5b 55%, #4ee0d0);
+  --radius-lg: 18px;
 }
 
 .genre-hiphop {
@@ -523,6 +563,139 @@ body[data-theme="hiphop"] {
   width: 30px;
   height: 30px;
   font-size: 12px;
+}
+
+/* Fernseher */
+
+.tv {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tv-antenna {
+  position: relative;
+  height: 26px;
+  width: 70px;
+}
+
+.tv-antenna span {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  height: 26px;
+  background: linear-gradient(to top, #8e9ba3, #d7e2e8);
+  transform-origin: bottom center;
+}
+
+.tv-antenna span:nth-child(1) { transform: rotate(-32deg); }
+.tv-antenna span:nth-child(2) { transform: rotate(32deg); }
+
+.tv-body {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 11px;
+  border-radius: 12px;
+  background: linear-gradient(165deg, #46565f, #1d2a32);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 0 26px var(--glow), 0 16px 30px rgba(0, 0, 0, 0.55);
+}
+
+.tv-screen {
+  position: relative;
+  width: 132px;
+  height: 100px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  background: radial-gradient(circle at 50% 40%, #123240, #06161d 75%);
+  box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.8);
+}
+
+.tv-text {
+  font-family: 'Karla', sans-serif;
+  font-weight: 800;
+  font-size: 26px;
+  color: var(--accent);
+  text-shadow: 0 0 14px var(--glow);
+}
+
+.tv-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tv-scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg, rgba(255, 255, 255, 0.07) 0 1px, transparent 1px 3px);
+}
+
+.tv-on .tv-screen {
+  box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.8), 0 0 20px var(--glow);
+}
+
+.tv-on .tv-scanlines {
+  animation: flicker 2.6s linear infinite;
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; transform: translateY(0); }
+  50%      { opacity: 0.55; transform: translateY(2px); }
+}
+
+.tv-knobs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tv-knobs span {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #e2e8ea, #697880);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.35);
+}
+
+.tv.media-small .tv-antenna {
+  height: 14px;
+  width: 38px;
+}
+
+.tv.media-small .tv-antenna span {
+  height: 14px;
+}
+
+.tv.media-small .tv-body {
+  gap: 5px;
+  padding: 6px;
+  border-radius: 7px;
+}
+
+.tv.media-small .tv-screen {
+  width: 64px;
+  height: 46px;
+  border-radius: 5px;
+}
+
+.tv.media-small .tv-text {
+  font-size: 14px;
+}
+
+.tv.media-small .tv-knobs {
+  gap: 5px;
+}
+
+.tv.media-small .tv-knobs span {
+  width: 8px;
+  height: 8px;
 }
 
 /* Kassette */
@@ -1137,6 +1310,7 @@ body[data-theme="hiphop"] {
 @media (prefers-reduced-motion: reduce) {
   .vinyl-spinning,
   .reel-spinning,
+  .tv-on .tv-scanlines,
   .is-playing .equalizer span {
     animation: none;
   }
@@ -1146,6 +1320,8 @@ body[data-theme="hiphop"] {
   .start-title { font-size: 42px; }
   .vinyl { width: 124px; height: 124px; }
   .cassette { width: 176px; height: 112px; }
+  .tv-screen { width: 118px; height: 90px; }
+  .tv.media-small .tv-screen { width: 54px; height: 40px; }
   .genre-card { gap: 10px; padding: 13px; }
   .genre-card-visual { width: 80px; }
   .cassette.media-small { width: 80px; height: 52px; }

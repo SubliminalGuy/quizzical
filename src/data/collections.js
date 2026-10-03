@@ -1,5 +1,6 @@
 import technoTracks from "./technoTracks.json"
 import hiphopTracks from "./hiphopTracks.json"
+import popRockTracks from "./popRockTracks.json"
 
 /**
  * Jede Sammlung bringt ihren eigenen Zeitraum, ihr eigenes Thema und ihre
@@ -7,6 +8,26 @@ import hiphopTracks from "./hiphopTracks.json"
  * helperFunctions/buildRounds.js.
  */
 const collections = [
+  {
+    id: "popRock80s",
+    theme: "eighties",
+    label: "80er Pop & Rock",
+    era: "1980 – 1989",
+    tagline: "Das MTV-Jahrzehnt zwischen New Wave und Stadionrock",
+    examples: "a-ha, Queen, Madonna, Bon Jovi",
+    player: "tv",
+    startLabel: "Fernseher an",
+    firstYear: 1980,
+    lastYear: 1989,
+    tracks: popRockTracks,
+    ranks: [
+      { min: 1,   emoji: "📺", title: "MTV-Legende",           text: "Alles richtig. Du kennst die Videos auswendig." },
+      { min: 0.8, emoji: "🎸", title: "Stadion-Headliner",     text: "Fast lupenrein — da sitzt jede Hook." },
+      { min: 0.6, emoji: "🕶️", title: "Walkman-Veteran",       text: "Solide Seite A. Da geht noch was." },
+      { min: 0.4, emoji: "📻", title: "Radiohörer",            text: "Zeit für eine Runde Klassiker." },
+      { min: 0,   emoji: "🎵", title: "Frischling im Jahrzehnt", text: "Kopfhörer auf und nochmal von vorn." }
+    ]
+  },
   {
     id: "techno90s",
     theme: "techno",
