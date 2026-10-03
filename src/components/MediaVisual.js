@@ -1,10 +1,32 @@
 /**
- * Der Tonträger der jeweiligen Sammlung: Platte für Techno, Kassette für HipHop.
- * `label` steht mittig (Jahr oder "?"), `cover` ersetzt es nach der Auflösung.
+ * Der Tonträger der jeweiligen Sammlung: Platte für Techno, Kassette für
+ * HipHop, Fernseher für die MTV-Jahre. `label` steht mittig (Jahr oder "?"),
+ * `cover` ersetzt es nach der Auflösung.
  */
 export default function MediaVisual(props) {
   const { kind, spinning, label, cover, small } = props
   const sizeClass = small ? " media-small" : ""
+
+  if (kind === "tv") {
+    return (
+      <div className={`tv${spinning ? " tv-on" : ""}${sizeClass}`}>
+        <div className="tv-antenna" aria-hidden="true">
+          <span /><span />
+        </div>
+        <div className="tv-body">
+          <div className="tv-screen">
+            {cover
+              ? <img className="tv-cover" src={cover} alt="" />
+              : <span className="tv-text">{label}</span>}
+            <span className="tv-scanlines" aria-hidden="true" />
+          </div>
+          <div className="tv-knobs" aria-hidden="true">
+            <span /><span />
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   if (kind === "cassette") {
     return (

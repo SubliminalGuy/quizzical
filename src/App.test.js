@@ -14,10 +14,11 @@ async function startGenre(name) {
   await act(async () => {});
 }
 
-test('the start screen offers both music styles', () => {
+test('the start screen offers every music style', () => {
   render(<App />);
 
   expect(screen.getByText(/Wähle deine Musikrichtung/i)).toBeInTheDocument();
+  expect(screen.getByText('80er Pop & Rock')).toBeInTheDocument();
   expect(screen.getByText('Techno & Elektro')).toBeInTheDocument();
   expect(screen.getByText('Oldschool HipHop')).toBeInTheDocument();
 });
@@ -39,11 +40,18 @@ test('each style brings its own timeline', async () => {
   expect(technoYears).toHaveLength(10);
   unmount();
 
-  render(<App />);
+  const second = render(<App />);
   await startGenre('Oldschool HipHop');
   const hiphopYears = screen.getAllByText(/^'\d\d$/).map(el => el.textContent);
   expect(hiphopYears[0]).toBe("'79");
   expect(hiphopYears[hiphopYears.length - 1]).toBe("'96");
+  second.unmount();
+
+  render(<App />);
+  await startGenre('80er Pop & Rock');
+  const eightiesYears = screen.getAllByText(/^'\d\d$/).map(el => el.textContent);
+  expect(eightiesYears[0]).toBe("'80");
+  expect(eightiesYears).toHaveLength(10);
 });
 
 test('the chosen style themes the page', async () => {
@@ -52,6 +60,22 @@ test('the chosen style themes the page', async () => {
 
   await startGenre('Oldschool HipHop');
   expect(document.body.dataset.theme).toBe('hiphop');
+});
+
+test('each style brings its own medium', async () => {
+  const { container, unmount } = render(<App />);
+  await startGenre('80er Pop & Rock');
+  expect(container.querySelector('.tv')).toBeInTheDocument();
+  unmount();
+
+  const second = render(<App />);
+  await startGenre('Oldschool HipHop');
+  expect(second.container.querySelector('.cassette')).toBeInTheDocument();
+  second.unmount();
+
+  const third = render(<App />);
+  await startGenre('Techno & Elektro');
+  expect(third.container.querySelector('.vinyl')).toBeInTheDocument();
 });
 
 test('a round can be played through to the reveal', async () => {

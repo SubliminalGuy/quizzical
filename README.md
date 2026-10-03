@@ -8,6 +8,7 @@ Startseite gewählt und färbt das ganze Spiel ein.
 
 | Richtung | Zeitraum | Tracks | Tonträger |
 |---|---|---|---|
+| 80er Pop & Rock | 1980 – 1989 | 80 | Fernseher |
 | Techno & Elektro | 1990 – 1999 | 50 | Schallplatte |
 | Oldschool HipHop | 1979 – 1996 | 64 | Kassette |
 
@@ -40,8 +41,8 @@ dient als Stichentscheid gegen späte Remixe. Findet sich nichts oder ist die AP
 nicht erreichbar, bleibt das Spiel voll bedienbar — der Play-Button treibt dann
 nur die Animation und ein Hinweis erklärt die Lage.
 
-Das Cover erscheint erst nach der Auflösung auf Plattenlabel oder Kassette,
-vorher wäre es ein Spoiler.
+Das Cover erscheint erst nach der Auflösung auf Plattenlabel, Kassette oder
+Bildschirm, vorher wäre es ein Spoiler.
 
 ### Snippets fest eintragen
 
@@ -60,7 +61,8 @@ sich eine einzelne Sammlung bearbeiten.
 1. Trackdatei unter `src/data/` anlegen — je Eintrag `title`, `artist`, `year`,
    `genre` und `previewUrl: null`.
 2. In `src/data/collections.js` einen Eintrag ergänzen: Zeitraum (`firstYear`,
-   `lastYear`), `theme`, `player` (`vinyl` oder `cassette`), Texte und Ränge.
+   `lastYear`), `theme`, `player` (`vinyl`, `cassette` oder `tv`), Texte und
+   Ränge.
 3. Für ein eigenes Farbthema einen Block `body[data-theme="…"]` in `App.css`
    anlegen. Die Variablen dort sind semantisch benannt (`--accent`, `--good`,
    `--bad`, `--radius-lg` …), der Rest des Stylesheets braucht keine Änderung.
@@ -75,7 +77,7 @@ src/
   App.js                        Zustandsmaschine: start → game → results
   components/
     Start.js                    Startseite mit Richtungswahl
-    MediaVisual.js              Platte oder Kassette
+    MediaVisual.js              Platte, Kassette oder Fernseher
     TrackPlayer.js              Abspieler, Equalizer, Play/Pause
     ArtistChoice.js             Schritt 1: Gruppe raten
     YearTimeline.js             Schritt 2: Jahr auf dem Zeitstrahl
@@ -86,6 +88,7 @@ src/
     fetchPreview.js             Snippet-Suche über die iTunes Search API
   data/
     collections.js              Sammlungen, Themen, Ränge
+    popRockTracks.json          Trackbestand 80er Pop & Rock
     technoTracks.json           Trackbestand Techno
     hiphopTracks.json           Trackbestand HipHop
 scripts/
