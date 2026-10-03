@@ -1,12 +1,13 @@
 import './App.css';
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import buildRounds, {
   MAX_POINTS_PER_ROUND,
   scoreArtist,
-  scoreYear
+  scoreYear,
+  yearsFor
 } from "./helperFunctions/buildRounds"
-import allTracks from "./data/technoTracks.json"
+import collections from "./data/collections"
 
 import Start from "./components/Start"
 import TrackPlayer from "./components/TrackPlayer"
@@ -20,6 +21,7 @@ const ROUND_COUNT = 5
 export default function App() {
 
   const [screen, setScreen] = useState("start")      // start | game | results
+  const [collection, setCollection] = useState(null)
   const [rounds, setRounds] = useState([])
   const [roundIndex, setRoundIndex] = useState(0)
   const [guessArtist, setGuessArtist] = useState(null)
@@ -27,13 +29,19 @@ export default function App() {
   const [revealed, setRevealed] = useState(false)
   const [results, setResults] = useState([])
 
+  // Das Thema der gewählten Sammlung färbt die ganze Seite ein.
+  useEffect(() => {
+    document.body.dataset.theme = screen === "start" || !collection ? "neutral" : collection.theme
+  }, [screen, collection])
+
   const round = rounds[roundIndex]
   const score = results.reduce((sum, r) => sum + r.artistPoints + r.yearPoints, 0)
   const maxScore = ROUND_COUNT * MAX_POINTS_PER_ROUND
   const isLastRound = roundIndex === rounds.length - 1
 
-  function startGame() {
-    setRounds(buildRounds(allTracks, ROUND_COUNT))
+  function startGame(chosen) {
+    setCollection(chosen)
+    setRounds(buildRounds(chosen.tracks, ROUND_COUNT))
     setRoundIndex(0)
     setResults([])
     resetRound()
@@ -72,7 +80,11 @@ export default function App() {
   if (screen === "start") {
     return (
       <div className="main-container">
-        <Start startGame={startGame} roundCount={ROUND_COUNT} />
+        <Start
+          collections={collections}
+          roundCount={ROUND_COUNT}
+          startGame={startGame}
+        />
       </div>
     )
   }
@@ -81,10 +93,12 @@ export default function App() {
     return (
       <div className="main-container">
         <Results
+          collection={collection}
           results={results}
           score={score}
           maxScore={maxScore}
-          onRestart={startGame}
+          onRestart={() => startGame(collection)}
+          onChangeGenre={() => setScreen("start")}
         />
       </div>
     )
@@ -109,7 +123,7 @@ export default function App() {
         <p className="game-bar-score">{score} Pkt.</p>
       </header>
 
-      <TrackPlayer track={round.track} revealed={revealed} />
+      <TrackPlayer track={round.track} revealed={revealed} collection={collection} />
 
       <ArtistChoice
         options={round.artistOptions}
@@ -121,6 +135,7 @@ export default function App() {
       />
 
       <YearTimeline
+        years={yearsFor(collection)}
         guess={guessYear}
         correctYear={round.track.year}
         revealed={revealed}

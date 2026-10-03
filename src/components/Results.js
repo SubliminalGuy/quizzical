@@ -1,18 +1,12 @@
-function getRank(score, maxScore) {
-  const pct = maxScore > 0 ? score / maxScore : 0
-  if (pct === 1)  return { emoji: "🏆", title: "Loveparade-Legende", text: "Alles richtig. Du warst dabei, oder?" }
-  if (pct >= 0.8) return { emoji: "🔥", title: "Resident DJ", text: "Fast lupenrein — das Vinyl sitzt." }
-  if (pct >= 0.6) return { emoji: "😎", title: "Stammgast im Club", text: "Solide Nacht. Da geht noch was." }
-  if (pct >= 0.4) return { emoji: "🤔", title: "Gelegenheitsraver", text: "Die Neunziger rufen nach einem zweiten Set." }
-  return { emoji: "💪", title: "Frisch von der Tanzfläche", text: "Kopfhörer auf und nochmal von vorn." }
-}
+import { getRank } from "../data/collections"
 
 export default function Results(props) {
-  const { results, score, maxScore, onRestart } = props
-  const rank = getRank(score, maxScore)
+  const { collection, results, score, maxScore, onRestart, onChangeGenre } = props
+  const rank = getRank(collection, score, maxScore)
 
   return (
     <div className="results-screen">
+      <p className="results-collection">{collection.label} · {collection.era}</p>
       <div className="results-emoji">{rank.emoji}</div>
       <h2 className="results-title">{rank.title}</h2>
       <p className="results-score">
@@ -41,9 +35,14 @@ export default function Results(props) {
         })}
       </ul>
 
-      <button className="button primary-button" onClick={onRestart}>
-        Neues Set starten
-      </button>
+      <div className="results-actions">
+        <button className="button primary-button" onClick={onRestart}>
+          Noch ein Set
+        </button>
+        <button className="button ghost-button" onClick={onChangeGenre}>
+          Musikrichtung wechseln
+        </button>
+      </div>
     </div>
   )
 }

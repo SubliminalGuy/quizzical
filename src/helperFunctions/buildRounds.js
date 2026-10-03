@@ -1,8 +1,5 @@
 import { nanoid } from "nanoid"
 
-export const FIRST_YEAR = 1990
-export const LAST_YEAR = 1999
-
 export const POINTS_ARTIST = 2
 export const POINTS_YEAR_EXACT = 3
 export const POINTS_YEAR_CLOSE = 1
@@ -34,10 +31,13 @@ function pickArtistOptions(track, allTracks, optionCount = 4) {
   return shuffle([track.artist, ...decoys])
 }
 
-export const YEARS = Array.from(
-  { length: LAST_YEAR - FIRST_YEAR + 1 },
-  (_, i) => FIRST_YEAR + i
-)
+/** Alle Jahre, die der Zeitstrahl einer Sammlung anbietet. */
+export function yearsFor(collection) {
+  return Array.from(
+    { length: collection.lastYear - collection.firstYear + 1 },
+    (_, i) => collection.firstYear + i
+  )
+}
 
 export function scoreArtist(track, guessedArtist) {
   return guessedArtist === track.artist ? POINTS_ARTIST : 0

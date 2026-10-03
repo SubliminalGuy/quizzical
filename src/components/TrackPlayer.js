@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import fetchPreview from "../helperFunctions/fetchPreview"
+import MediaVisual from "./MediaVisual"
 
 const BAR_DELAYS = [0, 0.18, 0.36, 0.12, 0.42, 0.24, 0.06]
 
@@ -10,7 +11,7 @@ const NOTES = {
 }
 
 export default function TrackPlayer(props) {
-  const { track, revealed } = props
+  const { track, revealed, collection } = props
   const [playing, setPlaying] = useState(false)
   const [status, setStatus] = useState("loading")   // loading | ready | none | error
   const [preview, setPreview] = useState(null)
@@ -58,18 +59,17 @@ export default function TrackPlayer(props) {
     setPlaying(prev => !prev)
   }
 
-  const cover = revealed && preview && preview.artworkUrl
+  const cover = revealed && preview ? preview.artworkUrl : null
 
   return (
     <div className={`track-player${playing ? " is-playing" : ""}`}>
-      <div className="vinyl-stage">
-        <div className={`vinyl${playing ? " vinyl-spinning" : ""}`}>
-          {cover ? (
-            <img className="vinyl-cover" src={preview.artworkUrl} alt="" />
-          ) : (
-            <div className="vinyl-label">{revealed ? track.year : "?"}</div>
-          )}
-        </div>
+      <div className="media-stage">
+        <MediaVisual
+          kind={collection.player}
+          spinning={playing}
+          label={revealed ? track.year : "?"}
+          cover={cover}
+        />
       </div>
 
       <div className="track-meta">
@@ -83,7 +83,7 @@ export default function TrackPlayer(props) {
           <>
             <p className="track-title track-title-hidden">? ? ?</p>
             <p className="track-artist">Unbekannter Track</p>
-            <p className="track-genre">Irgendwo zwischen 1990 und 1999</p>
+            <p className="track-genre">{collection.label} · {collection.era}</p>
           </>
         )}
       </div>

@@ -1,6 +1,6 @@
 {
-  "short_name": "Ravehister",
-  "name": "Ravehister — 90er Techno Ratespiel",
+  "short_name": "Hitify",
+  "name": "Hitify — Musik-Ratespiel",
   "icons": [
     {
       "src": "favicon.ico",
@@ -20,6 +20,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#06040f",
-  "background_color": "#06040f"
+  "theme_color": "#0a0812",
+  "background_color": "#0a0812"
 }
