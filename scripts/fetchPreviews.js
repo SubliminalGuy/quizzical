@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 /**
- * Trägt Preview-URLs und Cover aus der iTunes Search API fest in
- * src/data/technoTracks.json ein.
+ * Trägt Preview-URLs und Cover aus der iTunes Search API fest in die
+ * Trackdateien unter src/data/ ein.
  *
- *   node scripts/fetchPreviews.js            # nur fehlende ergänzen
- *   node scripts/fetchPreviews.js --force    # alle neu suchen
- *   node scripts/fetchPreviews.js --dry-run  # nur berichten, nichts schreiben
+ *   node scripts/fetchPreviews.js                      # alle Sammlungen, nur fehlende
+ *   node scripts/fetchPreviews.js --file hiphopTracks  # nur eine Sammlung
+ *   node scripts/fetchPreviews.js --force              # alle neu suchen
+ *   node scripts/fetchPreviews.js --dry-run            # nur berichten, nichts schreiben
  *
  * Die App braucht das nicht — TrackPlayer sucht die Snippets zur Laufzeit
  * selbst. Das Skript ist für den Fall, dass die Treffer geprüft, korrigiert
@@ -15,7 +16,7 @@
 const fs = require("fs")
 const path = require("path")
 
-const DATA_PATH = path.join(__dirname, "..", "src", "data", "technoTracks.json")
+const DATA_DIR = path.join(__dirname, "..", "src", "data")
 const SEARCH_URL = "https://itunes.apple.com/search"
 const PAUSE_MS = 350   // iTunes drosselt bei etwa 20 Anfragen pro Minute
 
@@ -26,6 +27,18 @@ const BAD_WORDS = [
 
 const force = process.argv.includes("--force")
 const dryRun = process.argv.includes("--dry-run")
+
+/** Welche Trackdateien bearbeitet werden — ohne --file alle. */
+function dataFiles() {
+  const flagIndex = process.argv.indexOf("--file")
+  if (flagIndex !== -1 && process.argv[flagIndex + 1]) {
+    const name = process.argv[flagIndex + 1].replace(/\.json$/, "")
+    return [path.join(DATA_DIR, `${name}.json`)]
+  }
+  return fs.readdirSync(DATA_DIR)
+    .filter(name => name.endsWith("Tracks.json"))
+    .map(name => path.join(DATA_DIR, name))
+}
 
 function normalize(text) {
   return String(text)
@@ -84,10 +97,12 @@ async function lookup(track) {
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
-async function main() {
-  const tracks = JSON.parse(fs.readFileSync(DATA_PATH, "utf8"))
+async function processFile(dataPath) {
+  const tracks = JSON.parse(fs.readFileSync(dataPath, "utf8"))
   let found = 0
   let missing = 0
+
+  console.log(`\n── ${path.basename(dataPath)} (${tracks.length} Tracks) ──`)
 
   for (const track of tracks) {
     if (track.previewUrl && !force) continue
@@ -117,15 +132,27 @@ async function main() {
     await sleep(PAUSE_MS)
   }
 
-  console.log(`\n${found} Snippets gefunden, ${missing} offen.`)
+  console.log(`${found} Snippets gefunden, ${missing} offen.`)
 
   if (dryRun) {
     console.log("--dry-run: nichts geschrieben.")
     return
   }
   if (found > 0) {
-    fs.writeFileSync(DATA_PATH, JSON.stringify(tracks, null, 2) + "\n")
-    console.log(`${path.relative(process.cwd(), DATA_PATH)} aktualisiert.`)
+    fs.writeFileSync(dataPath, JSON.stringify(tracks, null, 2) + "\n")
+    console.log(`${path.relative(process.cwd(), dataPath)} aktualisiert.`)
+  }
+}
+
+async function main() {
+  const files = dataFiles()
+  for (const file of files) {
+    if (!fs.existsSync(file)) {
+      console.error(`✗ ${file} gibt es nicht.`)
+      process.exitCode = 1
+      continue
+    }
+    await processFile(file)
   }
 }
 
