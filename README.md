@@ -11,9 +11,32 @@ Startseite gewählt und färbt das ganze Spiel ein.
 | 80er Pop & Rock | 1980 – 1989 | 80 | Fernseher |
 | Techno & Elektro | 1990 – 1999 | 50 | Schallplatte |
 | Oldschool HipHop | 1979 – 1996 | 64 | Kassette |
+| Club & Bass | 2010 – 2026 | 35 | Telefon |
 
 Jede Sammlung bringt ihren eigenen Zeitraum, ihr eigenes Farbthema und ihre
 eigenen Ränge mit. Die Punkteregeln gelten für alle gleich.
+
+### Zu Club & Bass
+
+Die Sammlung deckt Jersey Club, Ghettotech und Miami Bass im Zeitraum
+2010–2026 ab, dazu Footwork und Baltimore Club als nächste Verwandte. Sie ist
+kleiner als die anderen, und das hat einen Grund: Große Teile dieser Szene
+erscheinen auf SoundCloud und Bandcamp ohne belastbares Erscheinungsdatum.
+Aufgenommen ist nur, was sich datieren lässt — Label-Veröffentlichungen, Alben
+und Chart-Singles. DJ-Edits ohne Datum bleiben draußen, weil ein Ratespiel über
+Jahreszahlen mit geschätzten Jahren wertlos wäre.
+
+Zwei Einschränkungen, die man kennen sollte:
+
+- **Miami Bass und Ghettotech haben ihre Blütezeit vor dem Zeitraum** (etwa
+  1985–1995 beziehungsweise 1996–2005). Innerhalb von 2010–2026 stehen sie für
+  das, was es dort tatsächlich gibt: DJ Godfathers Databass-Veröffentlichungen
+  und die heutige Miami-Szene um Nick León, INVT und Otto Von Schirach.
+- **Für 1980–2009 wäre eine zweite Sammlung nötig**, wenn der Kanon dieser
+  beiden Richtungen abgedeckt werden soll.
+
+Für 2010 gibt es keinen Track; das Jahr steht auf dem Zeitstrahl, ist aber nie
+die richtige Antwort.
 
 ## Spielablauf
 
@@ -61,8 +84,8 @@ sich eine einzelne Sammlung bearbeiten.
 1. Trackdatei unter `src/data/` anlegen — je Eintrag `title`, `artist`, `year`,
    `genre` und `previewUrl: null`.
 2. In `src/data/collections.js` einen Eintrag ergänzen: Zeitraum (`firstYear`,
-   `lastYear`), `theme`, `player` (`vinyl`, `cassette` oder `tv`), Texte und
-   Ränge.
+   `lastYear`), `theme`, `player` (`vinyl`, `cassette`, `tv` oder `phone`),
+   Texte und Ränge.
 3. Für ein eigenes Farbthema einen Block `body[data-theme="…"]` in `App.css`
    anlegen. Die Variablen dort sind semantisch benannt (`--accent`, `--good`,
    `--bad`, `--radius-lg` …), der Rest des Stylesheets braucht keine Änderung.
@@ -77,7 +100,7 @@ src/
   App.js                        Zustandsmaschine: start → game → results
   components/
     Start.js                    Startseite mit Richtungswahl
-    MediaVisual.js              Platte, Kassette oder Fernseher
+    MediaVisual.js              Platte, Kassette, Fernseher oder Telefon
     TrackPlayer.js              Abspieler, Equalizer, Play/Pause
     ArtistChoice.js             Schritt 1: Gruppe raten
     YearTimeline.js             Schritt 2: Jahr auf dem Zeitstrahl
@@ -88,6 +111,7 @@ src/
     fetchPreview.js             Snippet-Suche über die iTunes Search API
   data/
     collections.js              Sammlungen, Themen, Ränge
+    clubBassTracks.json         Trackbestand Club & Bass
     popRockTracks.json          Trackbestand 80er Pop & Rock
     technoTracks.json           Trackbestand Techno
     hiphopTracks.json           Trackbestand HipHop

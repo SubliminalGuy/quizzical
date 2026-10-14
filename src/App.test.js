@@ -21,6 +21,7 @@ test('the start screen offers every music style', () => {
   expect(screen.getByText('80er Pop & Rock')).toBeInTheDocument();
   expect(screen.getByText('Techno & Elektro')).toBeInTheDocument();
   expect(screen.getByText('Oldschool HipHop')).toBeInTheDocument();
+  expect(screen.getByText('Club & Bass')).toBeInTheDocument();
 });
 
 test('the artist step comes first, the year step unlocks after it', async () => {
@@ -47,11 +48,19 @@ test('each style brings its own timeline', async () => {
   expect(hiphopYears[hiphopYears.length - 1]).toBe("'96");
   second.unmount();
 
-  render(<App />);
+  const third = render(<App />);
   await startGenre('80er Pop & Rock');
   const eightiesYears = screen.getAllByText(/^'\d\d$/).map(el => el.textContent);
   expect(eightiesYears[0]).toBe("'80");
   expect(eightiesYears).toHaveLength(10);
+  third.unmount();
+
+  render(<App />);
+  await startGenre('Club & Bass');
+  const clubYears = screen.getAllByText(/^'\d\d$/).map(el => el.textContent);
+  expect(clubYears[0]).toBe("'10");
+  expect(clubYears[clubYears.length - 1]).toBe("'26");
+  expect(clubYears).toHaveLength(17);
 });
 
 test('the chosen style themes the page', async () => {
@@ -76,6 +85,11 @@ test('each style brings its own medium', async () => {
   const third = render(<App />);
   await startGenre('Techno & Elektro');
   expect(third.container.querySelector('.vinyl')).toBeInTheDocument();
+  third.unmount();
+
+  const fourth = render(<App />);
+  await startGenre('Club & Bass');
+  expect(fourth.container.querySelector('.phone')).toBeInTheDocument();
 });
 
 test('a round can be played through to the reveal', async () => {
