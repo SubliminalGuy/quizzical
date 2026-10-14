@@ -179,4 +179,14 @@ npm test     # Tests
 npm run build
 ```
 
+Welche Tracks kein Snippet finden, zeigt ein Lauf ohne Schreibzugriff:
+
+```bash
+node scripts/fetchPreviews.js --dry-run              # alle Sammlungen
+node scripts/fetchPreviews.js --dry-run --file clubBassTracks   # eine davon
+```
+
+Er meldet je Sammlung die Abdeckung und listet die Tracks, die eine URL von
+Hand brauchen — Einzelheiten unter [Snippets fest eintragen](#snippets-fest-eintragen).
+
 Das Projekt basiert auf [Create React App](https://github.com/facebook/create-react-app).
