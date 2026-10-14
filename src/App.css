@@ -1210,6 +1210,25 @@ body[data-theme="hiphop"] {
   text-align: center;
 }
 
+.player-source {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  opacity: 0.7;
+}
+
+/* Das Widget muss im Layout stehen, damit es Ton gibt — sichtbar wäre es
+   ein Spoiler, weil SoundCloud darin Titel und Interpret anzeigt. */
+.soundcloud-frame {
+  width: 1px;
+  height: 1px;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* ─────────────  Schrittkarten  ───────────── */
 
 .step-card {

@@ -56,16 +56,50 @@ Fünf Tracks pro Runde, maximal 25 Punkte.
 
 ## Audio
 
-Die Snippets kommen aus der **iTunes Search API**: 30 Sekunden pro Track, kein
-API-Key, keine Registrierung. `TrackPlayer` sucht sie beim Trackwechsel zur
-Laufzeit. Die API schickt keine CORS-Header, unterstützt aber JSONP — deshalb
-lädt `src/helperFunctions/fetchPreview.js` ein `<script>`-Tag statt `fetch()`.
+`TrackPlayer` sucht beim Trackwechsel ein 30-Sekunden-Snippet und probiert
+dafür mehrere Quellen der Reihe nach durch. Keine davon braucht einen API-Key:
+
+1. **Fest eingetragene `previewUrl`** aus der Trackdatei.
+2. **iTunes, Suche nach dem Song.**
+3. **iTunes, Suche nach dem Album** und dann dessen erster Titel. Das deckt
+   Einträge ab, die eine EP oder ein Album sind — davon haben die beiden
+   Bass-Sammlungen viele, und eine Songsuche findet dafür nichts.
+4. **Deezer, Suche nach dem Song.** Anderer Katalog, trifft öfter bei
+   Clubmusik, die bei Apple fehlt.
+5. **Fest eingetragene `soundcloudUrl`** — spielt über das SoundCloud-Widget.
+
+Weder iTunes noch Deezer schicken CORS-Header, beide können aber JSONP, deshalb
+lädt `src/helperFunctions/fetchPreview.js` ein `<script>`-Tag statt `fetch()` zu
+benutzen. Eine Quelle, die nicht antwortet, beendet die Suche nicht — die
+nächste bekommt ihre Chance. Erst wenn jede abfragende Quelle scheitert, meldet
+die Oberfläche ein Netzproblem statt „kein Snippet".
 
 Treffer werden gefiltert, bevor sie gespielt werden: Interpret und Titel müssen
 beide passen, Karaoke- und Tribute-Fassungen fliegen raus, das Erscheinungsjahr
-dient als Stichentscheid gegen späte Remixe. Findet sich nichts oder ist die API
-nicht erreichbar, bleibt das Spiel voll bedienbar — der Play-Button treibt dann
-nur die Animation und ein Hinweis erklärt die Lage.
+dient als Stichentscheid gegen späte Remixe. Findet keine Quelle etwas, bleibt
+das Spiel voll bedienbar — der Play-Button treibt dann nur die Animation und ein
+Hinweis erklärt die Lage. Unter dem Player steht, welche Quelle geliefert hat.
+
+### SoundCloud als letzte Rettung
+
+Viel Clubmusik liegt nur auf SoundCloud. Dafür nimmt ein Track das Feld
+`soundcloudUrl`:
+
+```json
+{ "title": "Nxwxrk", "artist": "Nadus", "year": 2014,
+  "soundcloudUrl": "https://soundcloud.com/nadus/nxwxrk" }
+```
+
+Zwei Dinge dazu:
+
+- **Die URL muss von Hand eingetragen werden.** SoundCloud hat keine Suche
+  ohne API-Key, und neue Keys vergibt die Plattform seit Jahren nicht.
+- **Das Widget steckt in einem iframe, der unsichtbar im Layout steht.** Er muss
+  gelegt sein, damit überhaupt Ton kommt; sichtbar wäre er ein Spoiler, weil
+  SoundCloud darin Titel und Interpret anzeigt. Ob das mit den Widget-Bedingungen
+  von SoundCloud vereinbar ist, ist nicht abschließend geklärt — deshalb ist es
+  die letzte Stufe der Kette und gilt nur für Tracks, bei denen jemand bewusst
+  eine URL einträgt.
 
 Das Cover erscheint erst nach der Auflösung auf Plattenlabel, Kassette oder
 Bildschirm, vorher wäre es ein Spoiler.
@@ -78,9 +112,22 @@ node scripts/fetchPreviews.js --dry-run  # nur berichten, nichts schreiben
 node scripts/fetchPreviews.js --force    # alle neu suchen
 ```
 
-Das Skript schreibt `previewUrl` und `artworkUrl` in die Trackdateien; eine dort
-eingetragene `previewUrl` gewinnt gegen die Laufzeitsuche. Mit `--file` lässt
-sich eine einzelne Sammlung bearbeiten.
+Das Skript probiert dieselben Quellen wie die App (iTunes Song, iTunes Album,
+Deezer) und schreibt `previewUrl` und `artworkUrl` in die Trackdateien; eine
+dort eingetragene URL gewinnt gegen die Laufzeitsuche. Mit `--file` lässt sich
+eine einzelne Sammlung bearbeiten.
+
+Am Ende meldet es die Abdeckung und listet jeden Track, für den keine Quelle
+etwas hatte — das sind genau die, die eine `soundcloudUrl` von Hand brauchen:
+
+```
+28 neu gefunden, 6 ohne Snippet — Abdeckung 82%.
+
+Ohne Snippet — hier hilft nur eine feste URL in der Trackdatei
+("previewUrl" für eine Audiodatei, "soundcloudUrl" für SoundCloud):
+  DJ Clent — Back Up Off Me
+  Brick Bandits — The Brick Bandits EP
+```
 
 ## Eine Musikrichtung ergänzen
 

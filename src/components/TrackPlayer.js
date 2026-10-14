@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import fetchPreview from "../helperFunctions/fetchPreview"
 import MediaVisual from "./MediaVisual"
+import SoundCloudAudio from "./SoundCloudAudio"
 
 const BAR_DELAYS = [0, 0.18, 0.36, 0.12, 0.42, 0.24, 0.06]
 
@@ -46,15 +47,11 @@ export default function TrackPlayer(props) {
 
   function togglePlay() {
     const audio = audioRef.current
-    if (!audio) {
-      // Ohne Snippet treibt der Button nur die Animation.
-      setPlaying(prev => !prev)
-      return
-    }
-    if (playing) {
-      audio.pause()
-    } else {
-      audio.play().catch(() => setPlaying(false))
+    // Ohne eigenes <audio> treibt der Button nur den Zustand: beim
+    // SoundCloud-Widget hängt die Wiedergabe daran, ohne Snippet die Animation.
+    if (audio) {
+      if (playing) audio.pause()
+      else audio.play().catch(() => setPlaying(false))
     }
     setPlaying(prev => !prev)
   }
@@ -105,10 +102,23 @@ export default function TrackPlayer(props) {
       {status !== "ready" && <p className="player-note">{NOTES[status]}</p>}
 
       {status === "ready" && (
+        <p className="player-source">Snippet über {preview.source}</p>
+      )}
+
+      {status === "ready" && preview.kind === "audio" && (
         <audio
           ref={audioRef}
           src={preview.previewUrl}
           onEnded={() => setPlaying(false)}
+        />
+      )}
+
+      {status === "ready" && preview.kind === "soundcloud" && (
+        <SoundCloudAudio
+          url={preview.soundcloudUrl}
+          playing={playing}
+          onEnded={() => setPlaying(false)}
+          onFail={() => { setPlaying(false); setStatus("none") }}
         />
       )}
     </div>
