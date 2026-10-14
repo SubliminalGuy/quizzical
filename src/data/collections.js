@@ -1,6 +1,7 @@
 import technoTracks from "./technoTracks.json"
 import hiphopTracks from "./hiphopTracks.json"
 import popRockTracks from "./popRockTracks.json"
+import clubBassTracks from "./clubBassTracks.json"
 
 /**
  * Jede Sammlung bringt ihren eigenen Zeitraum, ihr eigenes Thema und ihre
@@ -66,6 +67,26 @@ const collections = [
       { min: 0.6,  emoji: "📼", title: "Crate Digger",           text: "Solide Kiste. Ein paar Platten fehlen noch." },
       { min: 0.4,  emoji: "🧢", title: "Gelegenheitshörer",      text: "Zeit für eine Runde Klassiker." },
       { min: 0,    emoji: "🎧", title: "Frischling am Regal",    text: "Kopfhörer auf und nochmal von vorn." }
+    ]
+  },
+  {
+    id: "clubBass2010s",
+    theme: "club",
+    label: "Club & Bass",
+    era: "2010 – 2026",
+    tagline: "Jersey Club, Ghettotech und Miami Bass der Gegenwart",
+    examples: "DJ Sliink, Jlin, DJ Godfather, INVT",
+    player: "phone",
+    startLabel: "Antippen",
+    firstYear: 2010,
+    lastYear: 2026,
+    tracks: clubBassTracks,
+    ranks: [
+      { min: 1,    emoji: "📱", title: "Algorithmus-Flüsterer", text: "Alles richtig. Du warst vor dem Hype da." },
+      { min: 0.8,  emoji: "🔊", title: "Club-Resident",         text: "Fast lupenrein — der Bass sitzt." },
+      { min: 0.6,  emoji: "🎛️", title: "Szenekenner",           text: "Solide Runde. Ein paar Edits fehlen noch." },
+      { min: 0.4,  emoji: "📲", title: "Charts-Hörer",          text: "Du kennst die Hits, nicht die Deepcuts." },
+      { min: 0,    emoji: "🚪", title: "Noch im Vorraum",       text: "Kopfhörer auf und nochmal von vorn." }
     ]
   }
 ]
