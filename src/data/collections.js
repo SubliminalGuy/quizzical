@@ -2,6 +2,7 @@ import technoTracks from "./technoTracks.json"
 import hiphopTracks from "./hiphopTracks.json"
 import popRockTracks from "./popRockTracks.json"
 import clubBassTracks from "./clubBassTracks.json"
+import bassBootyTracks from "./bassBootyTracks.json"
 
 /**
  * Jede Sammlung bringt ihren eigenen Zeitraum, ihr eigenes Thema und ihre
@@ -67,6 +68,26 @@ const collections = [
       { min: 0.6,  emoji: "📼", title: "Crate Digger",           text: "Solide Kiste. Ein paar Platten fehlen noch." },
       { min: 0.4,  emoji: "🧢", title: "Gelegenheitshörer",      text: "Zeit für eine Runde Klassiker." },
       { min: 0,    emoji: "🎧", title: "Frischling am Regal",    text: "Kopfhörer auf und nochmal von vorn." }
+    ]
+  },
+  {
+    id: "bassBooty",
+    theme: "booty",
+    label: "Bass & Booty",
+    era: "1985 – 2009",
+    tagline: "Miami Bass, Ghetto House, Ghettotech und Baltimore Club",
+    examples: "2 Live Crew, DJ Assault, DJ Deeon, Rod Lee",
+    player: "speaker",
+    startLabel: "Bass aufdrehen",
+    firstYear: 1985,
+    lastYear: 2009,
+    tracks: bassBootyTracks,
+    ranks: [
+      { min: 1,    emoji: "🔊", title: "Subwoofer-Legende",  text: "Alles richtig. Der Kofferraum wackelt." },
+      { min: 0.8,  emoji: "📢", title: "Soundsystem-Chef",   text: "Fast lupenrein. Da sitzt jeder Drop." },
+      { min: 0.6,  emoji: "💿", title: "Maxi-Sammler",       text: "Solide Runde. Ein paar 12-Inches fehlen." },
+      { min: 0.4,  emoji: "🚗", title: "Autoradio-Hörer",    text: "Du kennst die Hits, nicht die B-Seiten." },
+      { min: 0,    emoji: "🪩", title: "Noch an der Bar",    text: "Kopfhörer auf und nochmal von vorn." }
     ]
   },
   {

@@ -71,6 +71,24 @@ body[data-theme="techno"] {
   --radius-sm: 14px;
 }
 
+body[data-theme="booty"] {
+  --bg-deep: #150812;
+  --bg-panel: rgba(48, 21, 40, 0.85);
+  --accent: #ff8a1f;
+  --accent-2: #ff3ea5;
+  --good: #5fd97a;
+  --warn: #ffd23f;
+  --bad: #ff3b3b;
+  --text: #fdeef6;
+  --text-dim: rgba(253, 238, 246, 0.55);
+  --border: rgba(255, 138, 31, 0.28);
+  --btn-text: #1a0a04;
+  --grad: linear-gradient(100deg, #ff8a1f, #ff3ea5 60%, #b14dff);
+  --glow: rgba(255, 62, 165, 0.3);
+  --radius-lg: 14px;
+  --radius-sm: 8px;
+}
+
 body[data-theme="club"] {
   --bg-deep: #0b0c14;
   --bg-panel: rgba(23, 26, 44, 0.84);
@@ -152,6 +170,15 @@ body[data-theme="techno"] {
     radial-gradient(circle at 15% 0%, rgba(255, 46, 136, 0.28), transparent 45%),
     radial-gradient(circle at 85% 10%, rgba(34, 224, 255, 0.22), transparent 45%),
     radial-gradient(circle at 50% 100%, rgba(168, 85, 247, 0.25), transparent 55%),
+    var(--bg-deep);
+  background-attachment: fixed;
+}
+
+body[data-theme="booty"] {
+  background:
+    radial-gradient(circle at 16% 0%, rgba(255, 138, 31, 0.26), transparent 44%),
+    radial-gradient(circle at 84% 8%, rgba(255, 62, 165, 0.26), transparent 44%),
+    radial-gradient(circle at 50% 100%, rgba(177, 77, 255, 0.2), transparent 55%),
     var(--bg-deep);
   background-attachment: fixed;
 }
@@ -340,6 +367,18 @@ body[data-theme="hiphop"] {
   --btn-text: #12001f;
   --grad: linear-gradient(100deg, #ff2e88, #a855f7 55%, #22e0ff);
   --radius-lg: 22px;
+}
+
+.genre-booty {
+  --accent: #ff8a1f;
+  --accent-2: #ff3ea5;
+  --bg-panel: rgba(48, 21, 40, 0.92);
+  --border: rgba(255, 138, 31, 0.42);
+  --glow: rgba(255, 62, 165, 0.28);
+  --text-dim: rgba(253, 238, 246, 0.55);
+  --btn-text: #1a0a04;
+  --grad: linear-gradient(100deg, #ff8a1f, #ff3ea5 60%, #b14dff);
+  --radius-lg: 14px;
 }
 
 .genre-club {
@@ -602,6 +641,114 @@ body[data-theme="hiphop"] {
   width: 30px;
   height: 30px;
   font-size: 12px;
+}
+
+/* Bassbox */
+
+.speaker {
+  width: 158px;
+  padding: 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  border-radius: 8px;
+  background: linear-gradient(165deg, #3a2b22, #1a1210);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 26px var(--glow), 0 16px 30px rgba(0, 0, 0, 0.55);
+}
+
+.speaker-cone {
+  position: relative;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 50%;
+  background:
+    repeating-radial-gradient(circle at center, #241a16 0 4px, #140e0c 4px 9px);
+  box-shadow:
+    inset 0 0 0 3px rgba(255, 255, 255, 0.08),
+    inset 0 0 22px rgba(0, 0, 0, 0.8);
+  transition: transform 0.1s ease;
+}
+
+.speaker-on .speaker-cone {
+  animation: thump 0.55s ease-in-out infinite alternate;
+}
+
+@keyframes thump {
+  from { transform: scale(1); }
+  to   { transform: scale(1.06); }
+}
+
+.speaker-dust {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-family: 'Karla', sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--btn-text);
+  background: var(--grad);
+  box-shadow: 0 0 16px var(--glow);
+}
+
+.speaker-cover {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.18);
+}
+
+.speaker-foot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.speaker-port {
+  flex: 1;
+  height: 13px;
+  border-radius: 7px;
+  background: radial-gradient(ellipse at 50% 20%, #0b0708, #000);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.speaker-badge {
+  width: 26px;
+  height: 7px;
+  border-radius: 2px;
+  background: var(--accent);
+  opacity: 0.75;
+}
+
+.speaker.media-small {
+  width: 84px;
+  padding: 7px;
+  gap: 6px;
+  border-radius: 5px;
+}
+
+.speaker.media-small .speaker-dust {
+  width: 28px;
+  height: 28px;
+  font-size: 11px;
+}
+
+.speaker.media-small .speaker-foot {
+  gap: 5px;
+}
+
+.speaker.media-small .speaker-port {
+  height: 7px;
+}
+
+.speaker.media-small .speaker-badge {
+  width: 14px;
+  height: 4px;
 }
 
 /* Telefon */
@@ -1189,8 +1336,8 @@ body[data-theme="hiphop"] {
 
 .timeline-years {
   position: relative;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(var(--per-row, 10), 1fr);
   gap: 2px;
 }
 
@@ -1469,6 +1616,7 @@ body[data-theme="hiphop"] {
   .reel-spinning,
   .tv-on .tv-scanlines,
   .phone-on .phone-wave span,
+  .speaker-on .speaker-cone,
   .is-playing .equalizer span {
     animation: none;
   }
@@ -1480,6 +1628,7 @@ body[data-theme="hiphop"] {
   .cassette { width: 176px; height: 112px; }
   .tv-screen { width: 118px; height: 90px; }
   .phone { width: 94px; height: 166px; }
+  .speaker { width: 140px; }
   .tv.media-small .tv-screen { width: 54px; height: 40px; }
   .genre-card { gap: 10px; padding: 13px; }
   .genre-card-visual { width: 80px; }

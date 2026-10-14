@@ -2,12 +2,29 @@ const WAVE_HEIGHTS = [34, 58, 22, 76, 44, 92, 30, 66, 48, 80, 26, 54]
 
 /**
  * Der Tonträger der jeweiligen Sammlung: Platte für Techno, Kassette für
- * HipHop, Fernseher für die MTV-Jahre, Telefon für die Streaming-Jahre.
+ * HipHop, Fernseher für die MTV-Jahre, Telefon für die Streaming-Jahre,
+ * Bassbox für die Bass-Jahre.
  * `label` steht mittig (Jahr oder "?"), `cover` ersetzt es nach der Auflösung.
  */
 export default function MediaVisual(props) {
   const { kind, spinning, label, cover, small } = props
   const sizeClass = small ? " media-small" : ""
+
+  if (kind === "speaker") {
+    return (
+      <div className={`speaker${spinning ? " speaker-on" : ""}${sizeClass}`}>
+        <div className="speaker-cone">
+          {cover
+            ? <img className="speaker-cover" src={cover} alt="" />
+            : <span className="speaker-dust">{label}</span>}
+        </div>
+        <div className="speaker-foot">
+          <span className="speaker-port" aria-hidden="true" />
+          <span className="speaker-badge" aria-hidden="true" />
+        </div>
+      </div>
+    )
+  }
 
   if (kind === "phone") {
     return (

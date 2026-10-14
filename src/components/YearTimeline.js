@@ -1,6 +1,10 @@
 const MAX_PER_ROW = 10
 
-/** Teilt lange Zeiträume auf gleich volle Zeilen auf, damit alle Jahre sichtbar bleiben. */
+/**
+ * Teilt lange Zeiträume auf gleich volle Zeilen auf, damit alle Jahre sichtbar
+ * bleiben. Gibt die Zeilenbreite mit zurück: Eine kürzere letzte Zeile behält
+ * dasselbe Raster, damit die Jahre untereinander stehen.
+ */
 function toRows(years) {
   const rowCount = Math.ceil(years.length / MAX_PER_ROW)
   const perRow = Math.ceil(years.length / rowCount)
@@ -8,12 +12,12 @@ function toRows(years) {
   for (let i = 0; i < years.length; i += perRow) {
     rows.push(years.slice(i, i + perRow))
   }
-  return rows
+  return { rows, perRow }
 }
 
 export default function YearTimeline(props) {
   const { years, guess, correctYear, revealed, active, locked, onSelect } = props
-  const rows = toRows(years)
+  const { rows, perRow } = toRows(years)
 
   return (
     <section className={`step-card${active ? " step-active" : ""}${locked ? " step-locked" : ""}`}>
@@ -25,7 +29,10 @@ export default function YearTimeline(props) {
 
       {locked && <p className="step-lock-hint">Erst die Gruppe tippen.</p>}
 
-      <div className={`timeline${rows.length > 1 ? " timeline-dense" : ""}`}>
+      <div
+        className={`timeline${rows.length > 1 ? " timeline-dense" : ""}`}
+        style={{ "--per-row": perRow }}
+      >
         {rows.map((row, rowIndex) => (
           <div className="timeline-row" key={rowIndex}>
             <div className="timeline-line" />
