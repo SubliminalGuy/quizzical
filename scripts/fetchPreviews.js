@@ -1,7 +1,10 @@
 #!/usr/bin/env node
 /**
- * Trägt Preview-URLs und Cover aus der iTunes Search API fest in die
- * Trackdateien unter src/data/ ein.
+ * Trägt Preview-URLs und Cover fest in die Trackdateien unter src/data/ ein
+ * und meldet, für welche Tracks keine Quelle etwas hat.
+ *
+ * Probiert dieselben Quellen wie die App: iTunes (Song), iTunes (Album und
+ * dann dessen erster Titel) und Deezer.
  *
  *   node scripts/fetchPreviews.js                      # alle Sammlungen, nur fehlende
  *   node scripts/fetchPreviews.js --file hiphopTracks  # nur eine Sammlung
@@ -17,6 +20,7 @@ const fs = require("fs")
 const path = require("path")
 
 const DATA_DIR = path.join(__dirname, "..", "src", "data")
+const DEEZER_URL = "https://api.deezer.com"
 const SEARCH_URL = "https://itunes.apple.com/search"
 const PAUSE_MS = 350   // iTunes drosselt bei etwa 20 Anfragen pro Minute
 
@@ -76,16 +80,17 @@ function scoreCandidate(candidate, track) {
   return score
 }
 
-async function lookup(track) {
-  const term = encodeURIComponent(`${track.artist} ${track.title}`)
-  const response = await fetch(`${SEARCH_URL}?term=${term}&entity=song&limit=25`)
+async function getJson(url) {
+  const response = await fetch(url)
   if (!response.ok) throw new Error(`HTTP ${response.status}`)
+  return response.json()
+}
 
-  const data = await response.json()
+function pickBest(candidates, track) {
   let best = null
   let bestScore = 0
 
-  for (const candidate of data.results || []) {
+  for (const candidate of candidates) {
     const score = scoreCandidate(candidate, track)
     if (score > bestScore) {
       best = candidate
@@ -95,17 +100,76 @@ async function lookup(track) {
   return best
 }
 
+/** 1. iTunes, Suche nach dem Song. */
+async function itunesSong(track) {
+  const term = encodeURIComponent(`${track.artist} ${track.title}`)
+  const data = await getJson(`${SEARCH_URL}?term=${term}&entity=song&limit=25`)
+  const match = pickBest(data.results || [], track)
+  return match ? { ...match, source: "iTunes" } : null
+}
+
+/** 2. iTunes, Suche nach dem Album und dann dessen erster Titel. */
+async function itunesAlbum(track) {
+  const term = encodeURIComponent(`${track.artist} ${track.title}`)
+  const found = await getJson(`${SEARCH_URL}?term=${term}&entity=album&limit=10`)
+
+  const wantArtist = normalize(track.artist)
+  const wantTitle = normalize(track.title)
+  const album = (found.results || []).find(item => {
+    const foundArtist = normalize(item.artistName)
+    const foundTitle = normalize(item.collectionName)
+    const artistFits = foundArtist === wantArtist ||
+      foundArtist.includes(wantArtist) || wantArtist.includes(foundArtist)
+    return artistFits && (foundTitle === wantTitle || foundTitle.startsWith(wantTitle))
+  })
+  if (!album) return null
+
+  await sleep(PAUSE_MS)
+  const tracks = await getJson(`${SEARCH_URL.replace("/search", "/lookup")}?id=${album.collectionId}&entity=song&limit=40`)
+  const first = (tracks.results || []).find(item => item.wrapperType === "track" && item.previewUrl)
+  if (!first) return null
+
+  return { ...first, source: "iTunes (Album)" }
+}
+
+/** 3. Deezer — anderer Katalog, trifft oft dort, wo Apple nichts hat. */
+async function deezerSong(track) {
+  const query = encodeURIComponent(`artist:"${track.artist}" track:"${track.title}"`)
+  const data = await getJson(`${DEEZER_URL}/search?q=${query}&limit=25`)
+  const candidates = (data.data || []).map(item => ({
+    artistName: item.artist ? item.artist.name : "",
+    trackName: item.title_short || item.title,
+    previewUrl: item.preview || null,
+    artworkUrl100: (item.album && (item.album.cover_medium || item.album.cover)) || null,
+    releaseDate: item.release_date || ""
+  }))
+  const match = pickBest(candidates, track)
+  return match ? { ...match, source: "Deezer" } : null
+}
+
+const SOURCES = [itunesSong, itunesAlbum, deezerSong]
+
+async function lookup(track) {
+  for (const source of SOURCES) {
+    const match = await source(track)
+    await sleep(PAUSE_MS)
+    if (match) return match
+  }
+  return null
+}
+
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 async function processFile(dataPath) {
   const tracks = JSON.parse(fs.readFileSync(dataPath, "utf8"))
   let found = 0
   let missing = 0
+  const open = []
 
   console.log(`\n── ${path.basename(dataPath)} (${tracks.length} Tracks) ──`)
 
   for (const track of tracks) {
-    if (track.previewUrl && !force) continue
+    if ((track.previewUrl || track.soundcloudUrl) && !force) continue
 
     let match = null
     try {
@@ -113,7 +177,7 @@ async function processFile(dataPath) {
     } catch (error) {
       console.error(`✗ ${track.artist} — ${track.title}: ${error.message}`)
       missing++
-      await sleep(PAUSE_MS)
+      open.push(`${track.artist} — ${track.title}`)
       continue
     }
 
@@ -122,17 +186,23 @@ async function processFile(dataPath) {
       track.artworkUrl = (match.artworkUrl100 || "").replace(/\/\d+x\d+bb\./, "/300x300bb.")
       found++
       const foundYear = (match.releaseDate || "").slice(0, 4)
-      const yearFlag = foundYear && Number(foundYear) !== track.year ? `  (iTunes: ${foundYear})` : ""
-      console.log(`✓ ${track.artist} — ${match.trackName}${yearFlag}`)
+      const yearFlag = foundYear && Number(foundYear) !== track.year ? `  (Katalog: ${foundYear})` : ""
+      console.log(`✓ [${match.source}] ${track.artist} — ${match.trackName}${yearFlag}`)
     } else {
       missing++
+      open.push(`${track.artist} — ${track.title}`)
       console.log(`· ${track.artist} — ${track.title}: kein Treffer`)
     }
-
-    await sleep(PAUSE_MS)
   }
 
-  console.log(`${found} Snippets gefunden, ${missing} offen.`)
+  const quota = tracks.length ? Math.round((tracks.length - missing) / tracks.length * 100) : 0
+  console.log(`${found} neu gefunden, ${missing} ohne Snippet — Abdeckung ${quota}%.`)
+
+  if (open.length) {
+    console.log(`\nOhne Snippet — hier hilft nur eine feste URL in der Trackdatei`)
+    console.log(`("previewUrl" für eine Audiodatei, "soundcloudUrl" für SoundCloud):`)
+    open.forEach(name => console.log(`  ${name}`))
+  }
 
   if (dryRun) {
     console.log("--dry-run: nichts geschrieben.")
