@@ -23,6 +23,7 @@ test('the start screen offers every music style', () => {
   expect(screen.getByText('Oldschool HipHop')).toBeInTheDocument();
   expect(screen.getByText('Club & Bass')).toBeInTheDocument();
   expect(screen.getByText('Bass & Booty')).toBeInTheDocument();
+  expect(screen.getByText('White Girl Music')).toBeInTheDocument();
 });
 
 test('the artist step comes first, the year step unlocks after it', async () => {
@@ -64,12 +65,20 @@ test('each style brings its own timeline', async () => {
   expect(clubYears).toHaveLength(17);
   fourth.unmount();
 
-  render(<App />);
+  const fifth = render(<App />);
   await startGenre('Bass & Booty');
   const bootyYears = screen.getAllByText(/^'\d\d$/).map(el => el.textContent);
   expect(bootyYears[0]).toBe("'85");
   expect(bootyYears[bootyYears.length - 1]).toBe("'09");
   expect(bootyYears).toHaveLength(25);
+  fifth.unmount();
+
+  render(<App />);
+  await startGenre('White Girl Music');
+  const wgmYears = screen.getAllByText(/^'\d\d$/).map(el => el.textContent);
+  expect(wgmYears[0]).toBe("'00");
+  expect(wgmYears[wgmYears.length - 1]).toBe("'26");
+  expect(wgmYears).toHaveLength(27);
 });
 
 test('the chosen style themes the page', async () => {
@@ -104,6 +113,11 @@ test('each style brings its own medium', async () => {
   const fifth = render(<App />);
   await startGenre('Bass & Booty');
   expect(fifth.container.querySelector('.speaker')).toBeInTheDocument();
+  fifth.unmount();
+
+  const sixth = render(<App />);
+  await startGenre('White Girl Music');
+  expect(sixth.container.querySelector('.headphones')).toBeInTheDocument();
 });
 
 test('a round can be played through to the reveal', async () => {

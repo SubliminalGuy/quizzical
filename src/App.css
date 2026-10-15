@@ -71,6 +71,24 @@ body[data-theme="techno"] {
   --radius-sm: 14px;
 }
 
+body[data-theme="wgm"] {
+  --bg-deep: #17111f;
+  --bg-panel: rgba(44, 32, 58, 0.84);
+  --accent: #ff9ec7;
+  --accent-2: #c9b6ff;
+  --good: #8ee6b0;
+  --warn: #ffd79a;
+  --bad: #ff6b8a;
+  --text: #fdf2f8;
+  --text-dim: rgba(253, 242, 248, 0.55);
+  --border: rgba(255, 158, 199, 0.26);
+  --btn-text: #2a1226;
+  --grad: linear-gradient(100deg, #ff9ec7, #c9b6ff 55%, #9ed8ff);
+  --glow: rgba(255, 158, 199, 0.3);
+  --radius-lg: 24px;
+  --radius-sm: 16px;
+}
+
 body[data-theme="booty"] {
   --bg-deep: #150812;
   --bg-panel: rgba(48, 21, 40, 0.85);
@@ -170,6 +188,15 @@ body[data-theme="techno"] {
     radial-gradient(circle at 15% 0%, rgba(255, 46, 136, 0.28), transparent 45%),
     radial-gradient(circle at 85% 10%, rgba(34, 224, 255, 0.22), transparent 45%),
     radial-gradient(circle at 50% 100%, rgba(168, 85, 247, 0.25), transparent 55%),
+    var(--bg-deep);
+  background-attachment: fixed;
+}
+
+body[data-theme="wgm"] {
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255, 158, 199, 0.26), transparent 44%),
+    radial-gradient(circle at 82% 8%, rgba(201, 182, 255, 0.24), transparent 44%),
+    radial-gradient(circle at 50% 100%, rgba(158, 216, 255, 0.16), transparent 55%),
     var(--bg-deep);
   background-attachment: fixed;
 }
@@ -367,6 +394,18 @@ body[data-theme="hiphop"] {
   --btn-text: #12001f;
   --grad: linear-gradient(100deg, #ff2e88, #a855f7 55%, #22e0ff);
   --radius-lg: 22px;
+}
+
+.genre-wgm {
+  --accent: #ff9ec7;
+  --accent-2: #c9b6ff;
+  --bg-panel: rgba(44, 32, 58, 0.92);
+  --border: rgba(255, 158, 199, 0.42);
+  --glow: rgba(255, 158, 199, 0.28);
+  --text-dim: rgba(253, 242, 248, 0.55);
+  --btn-text: #2a1226;
+  --grad: linear-gradient(100deg, #ff9ec7, #c9b6ff 55%, #9ed8ff);
+  --radius-lg: 24px;
 }
 
 .genre-booty {
@@ -641,6 +680,101 @@ body[data-theme="hiphop"] {
   width: 30px;
   height: 30px;
   font-size: 12px;
+}
+
+/* Kopfhörer */
+
+.headphones {
+  position: relative;
+  width: 160px;
+  padding-top: 26px;
+}
+
+.headphones-band {
+  position: absolute;
+  top: 0;
+  left: 14px;
+  right: 14px;
+  height: 56px;
+  border: 9px solid #4a4356;
+  border-bottom: none;
+  border-radius: 80px 80px 0 0;
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.12);
+}
+
+.headphones-cups {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.headphones-cup {
+  width: 56px;
+  height: 74px;
+  border-radius: 28px / 34px;
+  background: linear-gradient(165deg, #554c63, #272231);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 0 22px var(--glow), 0 12px 24px rgba(0, 0, 0, 0.5);
+}
+
+.headphones-cup-main {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 34px;
+  background: var(--grad);
+}
+
+.headphones-text {
+  font-family: 'Karla', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  color: var(--btn-text);
+}
+
+.headphones-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.headphones-on .headphones-cup {
+  animation: breathe 1.4s ease-in-out infinite alternate;
+}
+
+@keyframes breathe {
+  from { box-shadow: 0 0 18px var(--glow), 0 12px 24px rgba(0, 0, 0, 0.5); }
+  to   { box-shadow: 0 0 34px var(--glow), 0 12px 24px rgba(0, 0, 0, 0.5); }
+}
+
+.headphones.media-small {
+  width: 88px;
+  padding-top: 15px;
+}
+
+.headphones.media-small .headphones-band {
+  left: 8px;
+  right: 8px;
+  height: 32px;
+  border-width: 6px;
+  border-radius: 48px 48px 0 0;
+}
+
+.headphones.media-small .headphones-cup {
+  width: 30px;
+  height: 40px;
+  border-radius: 15px / 19px;
+}
+
+.headphones.media-small .headphones-cup-main {
+  border-radius: 19px;
+}
+
+.headphones.media-small .headphones-text {
+  font-size: 11px;
 }
 
 /* Bassbox */
@@ -1636,6 +1770,7 @@ body[data-theme="hiphop"] {
   .tv-on .tv-scanlines,
   .phone-on .phone-wave span,
   .speaker-on .speaker-cone,
+  .headphones-on .headphones-cup,
   .is-playing .equalizer span {
     animation: none;
   }
@@ -1648,6 +1783,7 @@ body[data-theme="hiphop"] {
   .tv-screen { width: 118px; height: 90px; }
   .phone { width: 94px; height: 166px; }
   .speaker { width: 140px; }
+  .headphones { width: 142px; }
   .tv.media-small .tv-screen { width: 54px; height: 40px; }
   .genre-card { gap: 10px; padding: 13px; }
   .genre-card-visual { width: 80px; }
