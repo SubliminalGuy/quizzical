@@ -13,9 +13,23 @@ Startseite gewählt und färbt das ganze Spiel ein.
 | Oldschool HipHop | 1979 – 1996 | 64 | Kassette |
 | Bass & Booty | 1985 – 2009 | 34 | Bassbox |
 | Club & Bass | 2010 – 2026 | 35 | Telefon |
+| White Girl Music | 2000 – 2026 | 67 | Kopfhörer |
 
 Jede Sammlung bringt ihren eigenen Zeitraum, ihr eigenes Farbthema und ihre
 eigenen Ränge mit. Die Punkteregeln gelten für alle gleich.
+
+### Zu White Girl Music
+
+Der Begriff ist kein Genre im musikwissenschaftlichen Sinn, sondern ein
+Internet-Label: Er beschreibt eine Stimmung, nicht eine Machart, und wird
+überwiegend selbstironisch benutzt. Der nächste formale Verwandte wäre Girlie
+Pop.
+
+Die Quellen nennen zwei Cluster, die beide unter dem Label laufen — Mitgröl-Pop
+der 2000er und 2010er (Katy Perry, Kelly Clarkson, Carly Rae Jepsen, „Mr.
+Brightside") und die melancholische Seite (Taylor Swift, Lana Del Rey, Lorde,
+Mitski, Olivia Rodrigo). Die Sammlung deckt beide ab, deshalb der weite
+Zeitraum. Jedes Jahr von 2000 bis 2026 ist belegt.
 
 ### Zu Bass & Booty und Club & Bass
 
@@ -134,8 +148,8 @@ Ohne Snippet — hier hilft nur eine feste URL in der Trackdatei
 1. Trackdatei unter `src/data/` anlegen — je Eintrag `title`, `artist`, `year`,
    `genre` und `previewUrl: null`.
 2. In `src/data/collections.js` einen Eintrag ergänzen: Zeitraum (`firstYear`,
-   `lastYear`), `theme`, `player` (`vinyl`, `cassette`, `tv`, `phone` oder
-   `speaker`), Texte und Ränge.
+   `lastYear`), `theme`, `player` (`vinyl`, `cassette`, `tv`, `phone`,
+   `speaker` oder `headphones`), Texte und Ränge.
 3. Für ein eigenes Farbthema einen Block `body[data-theme="…"]` in `App.css`
    anlegen. Die Variablen dort sind semantisch benannt (`--accent`, `--good`,
    `--bad`, `--radius-lg` …), der Rest des Stylesheets braucht keine Änderung.
@@ -150,7 +164,8 @@ src/
   App.js                        Zustandsmaschine: start → game → results
   components/
     Start.js                    Startseite mit Richtungswahl
-    MediaVisual.js              Platte, Kassette, Fernseher, Telefon, Bassbox
+    MediaVisual.js              Platte, Kassette, Fernseher, Telefon,
+                                Bassbox oder Kopfhörer
     TrackPlayer.js              Abspieler, Equalizer, Play/Pause
     ArtistChoice.js             Schritt 1: Gruppe raten
     YearTimeline.js             Schritt 2: Jahr auf dem Zeitstrahl
@@ -163,6 +178,7 @@ src/
     collections.js              Sammlungen, Themen, Ränge
     bassBootyTracks.json        Trackbestand Bass & Booty
     clubBassTracks.json         Trackbestand Club & Bass
+    whiteGirlTracks.json        Trackbestand White Girl Music
     popRockTracks.json          Trackbestand 80er Pop & Rock
     technoTracks.json           Trackbestand Techno
     hiphopTracks.json           Trackbestand HipHop

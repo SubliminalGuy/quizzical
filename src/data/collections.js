@@ -3,6 +3,7 @@ import hiphopTracks from "./hiphopTracks.json"
 import popRockTracks from "./popRockTracks.json"
 import clubBassTracks from "./clubBassTracks.json"
 import bassBootyTracks from "./bassBootyTracks.json"
+import whiteGirlTracks from "./whiteGirlTracks.json"
 
 /**
  * Jede Sammlung bringt ihren eigenen Zeitraum, ihr eigenes Thema und ihre
@@ -108,6 +109,26 @@ const collections = [
       { min: 0.6,  emoji: "🎛️", title: "Szenekenner",           text: "Solide Runde. Ein paar Edits fehlen noch." },
       { min: 0.4,  emoji: "📲", title: "Charts-Hörer",          text: "Du kennst die Hits, nicht die Deepcuts." },
       { min: 0,    emoji: "🚪", title: "Noch im Vorraum",       text: "Kopfhörer auf und nochmal von vorn." }
+    ]
+  },
+  {
+    id: "whiteGirlMusic",
+    theme: "wgm",
+    label: "White Girl Music",
+    era: "2000 – 2026",
+    tagline: "Von Mitgröl-Pop bis Sad Girl — die Playlist, die alle mitsingen",
+    examples: "Taylor Swift, Katy Perry, Lana Del Rey, Olivia Rodrigo",
+    player: "headphones",
+    startLabel: "Mitsingen",
+    firstYear: 2000,
+    lastYear: 2026,
+    tracks: whiteGirlTracks,
+    ranks: [
+      { min: 1,    emoji: "👑", title: "Playlist-Königin",     text: "Alles richtig. Jede Zeile sitzt." },
+      { min: 0.8,  emoji: "🎀", title: "Erste Reihe",          text: "Fast lupenrein. Du kennst auch die Bridge." },
+      { min: 0.6,  emoji: "✨", title: "Mitsing-Garantie",     text: "Solide Runde. Beim Refrain warst du da." },
+      { min: 0.4,  emoji: "🌸", title: "Radio-Bekanntschaft",  text: "Die Hits ja, die Deepcuts nicht." },
+      { min: 0,    emoji: "🫧", title: "Noch beim Einsingen",  text: "Kopfhörer auf und nochmal von vorn." }
     ]
   }
 ]
